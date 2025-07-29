@@ -21,6 +21,10 @@ app.use(bodyParser.json());
 
 //Database Connection
 connectDB();
+//Routes configuration
+app.get("/", (req, res) => {
+    res.send("Hello World");
+});
 
 //app listening
 app.listen(PORT, () => {

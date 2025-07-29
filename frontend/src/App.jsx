@@ -1,12 +1,13 @@
 import React from "react";
 import { Button } from "./components/ui/button";
+import { Route, Router, Routes } from "react-router-dom";
+import AuthIndex from "./pages/auth";
 
 function App() {
   return (
-    <div className="text-2xl font-bold">
-      Welcome to The Mind Stack!
-      <Button className="cursor-pointer mt-4">Click Me</Button>
-    </div>
+    <Routes>
+      <Route path="/auth" element={<AuthIndex />} />
+    </Routes>
   );
 }
 
