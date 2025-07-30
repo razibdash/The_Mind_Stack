@@ -72,8 +72,18 @@ function AuthIndex() {
           className="w-full max-w-md bg-white-300 p-5"
         >
           <TabsList className="grid w-full grid-cols-2">
-            <TabsTrigger value="signin">Sign In</TabsTrigger>
-            <TabsTrigger value="signup">Sign Up</TabsTrigger>
+            <TabsTrigger
+              className="text-blue-300 font-bold cursor-pointer"
+              value="signin"
+            >
+              SIGN IN
+            </TabsTrigger>
+            <TabsTrigger
+              value="signup"
+              className="text-blue-300 font-bold cursor-pointer"
+            >
+              SIGN UP
+            </TabsTrigger>
           </TabsList>
           <TabsContent value="signin">
             <Card className="p-6 space-y-4">
