@@ -1,4 +1,5 @@
 import CommonForm from "@/components/common-from";
+import { AuthContext } from "@/context/auth-context";
 import {
   Card,
   CardContent,
@@ -8,15 +9,50 @@ import {
 } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { signInFormControls, signUpFormControls } from "@/config";
+import AuthContextProvider from "@/context/auth-context";
 import { GraduationCap, Image } from "lucide-react";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 
 function AuthIndex() {
   const [activeTab, setActiveTab] = useState("signin");
+  // Function to handle tab change
   function handleTabChange(value) {
     setActiveTab(value);
   }
+  // Import context for authentication
+  const {
+    signInFormData,
+    setSignInFormData,
+    signUpFormData,
+    setSignUpFormData,
+    handleRegisterUser,
+    handleLoginUser,
+  } = useContext(AuthContext);
+  // Function to handle tab change
+  function handleTabChange(value) {
+    setActiveTab(value);
+  }
+
+  // Function to check if the sign-in form is valid
+  function checkIfSignInFormIsValid() {
+    return (
+      signInFormData &&
+      signInFormData.userEmail !== "" &&
+      signInFormData.password !== ""
+    );
+  }
+  // Function to check if the sign-up form is valid
+  function checkIfSignUpFormIsValid() {
+    return (
+      signUpFormData &&
+      signUpFormData.userName !== "" &&
+      signUpFormData.userEmail !== "" &&
+      signUpFormData.password !== ""
+    );
+  }
+  // Function to handle form submission
+  console.log(signInFormData);
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -48,7 +84,14 @@ function AuthIndex() {
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-2">
-                <CommonForm formControls={signInFormControls} />
+                <CommonForm
+                  formControls={signInFormControls}
+                  buttonText={"Sign In"}
+                  formData={signInFormData}
+                  setFormData={setSignInFormData}
+                  isButtonDisabled={!checkIfSignInFormIsValid()}
+                  handleSubmit={handleLoginUser}
+                />
               </CardContent>
             </Card>
           </TabsContent>
