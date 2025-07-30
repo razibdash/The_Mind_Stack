@@ -39,7 +39,19 @@ function AuthIndex() {
             <TabsTrigger value="signin">Sign In</TabsTrigger>
             <TabsTrigger value="signup">Sign Up</TabsTrigger>
           </TabsList>
-          <TabsContent value="signin">signin</TabsContent>
+          <TabsContent value="signin">
+            <Card className="p-6 space-y-4">
+              <CardHeader>
+                <CardTitle className="text-[#3192C7]">Welcome Back!</CardTitle>
+                <CardDescription>
+                  Please enter your credentials to continue
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-2">
+                <CommonForm formControls={signInFormControls} />
+              </CardContent>
+            </Card>
+          </TabsContent>
           <TabsContent value="signup">
             <Card className="p-6 space-y-4">
               <CardHeader>
