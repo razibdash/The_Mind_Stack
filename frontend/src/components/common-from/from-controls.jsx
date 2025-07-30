@@ -9,7 +9,8 @@ import {
 } from "../ui/select";
 import { Textarea } from "../ui/textarea";
 
-function FormControls({ formControls = [], formData, setFormData }) {
+function FormControls({ formControls = [], formData = {}, setFormData }) {
+  // Function to render the component based on the type
   function renderComponentByType(getControlItem) {
     let element = null;
     const currentControlItemValue = formData[getControlItem.name] || "";
@@ -96,12 +97,16 @@ function FormControls({ formControls = [], formData, setFormData }) {
 
     return element;
   }
-
   return (
-    <div className="flex flex-col gap-3">
+    <div className="flex flex-col gap-5">
       {formControls.map((controleItem) => (
-        <div key={controleItem.name}>
-          <Label htmlFor={controleItem.name}>{controleItem.label}</Label>
+        <div className="" key={controleItem.name}>
+          <Label
+            className="text-sm font-medium mb-1"
+            htmlFor={controleItem.name}
+          >
+            {controleItem.label}
+          </Label>
           {renderComponentByType(controleItem)}
         </div>
       ))}

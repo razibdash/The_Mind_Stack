@@ -1,12 +1,12 @@
 import { Button } from "../ui/button";
-import FormControls from "./form-controls";
+import FormControls from "./from-controls";
 
 function CommonForm({
   handleSubmit,
   buttonText,
-  formControls = [],
-  formData,
+  formData = {},
   setFormData,
+  formControls = [],
   isButtonDisabled = false,
 }) {
   return (
@@ -17,7 +17,11 @@ function CommonForm({
         formData={formData}
         setFormData={setFormData}
       />
-      <Button disabled={isButtonDisabled} type="submit" className="mt-5 w-full">
+      <Button
+        disabled={isButtonDisabled}
+        type="submit"
+        className="mt-5 w-full bg-[#3192C7] hover:bg-[#1A6F8B] text-white"
+      >
         {buttonText || "Submit"}
       </Button>
     </form>
