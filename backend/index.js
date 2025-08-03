@@ -4,6 +4,8 @@ const cors= require("cors");
 const connectDB = require("./config/db/DB");
 const bodyParser = require("body-parser");
 const app = express();
+//Routes
+const authRoutes = require("./routes/auth-routes/index.js");
 //Port
 const PORT = process.env.PORT || 5000;
 
@@ -22,9 +24,9 @@ app.use(bodyParser.json());
 //Database Connection
 connectDB();
 //Routes configuration
-app.get("/", (req, res) => {
-    res.send("Hello World");
-});
+// API routes
+app.use("/api/auth", authRoutes);
+
 
 //app listening
 app.listen(PORT, () => {

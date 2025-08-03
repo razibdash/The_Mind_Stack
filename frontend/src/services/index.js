@@ -1,7 +1,7 @@
 import axiosInstance from "@/api/axiosInstance";
 
 export async function registerService(formData) {
-  const { data } = await axiosInstance.post("/auth/register", {
+  const { data } = await axiosInstance.post("api/auth/register", {
     ...formData,
     role: "user",
   });
@@ -10,13 +10,13 @@ export async function registerService(formData) {
 }
 
 export async function loginService(formData) {
-  const { data } = await axiosInstance.post("/auth/login", formData);
+  const { data } = await axiosInstance.post("api/auth/login", formData);
 
   return data;
 }
 
 export async function checkAuthService() {
-  const { data } = await axiosInstance.get("/auth/check-auth");
+  const { data } = await axiosInstance.get("api/auth/check-auth");
 
   return data;
 }
