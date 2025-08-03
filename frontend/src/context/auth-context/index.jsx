@@ -4,6 +4,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { initialSignInFormData, initialSignUpFormData } from "@/config";
 import { checkAuthService, loginService, registerService } from "@/services";
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const AuthContext = createContext(null);
 
 function AuthContextProvider({ children }) {

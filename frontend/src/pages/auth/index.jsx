@@ -29,10 +29,6 @@ function AuthIndex() {
     handleRegisterUser,
     handleLoginUser,
   } = useContext(AuthContext);
-  // Function to handle tab change
-  function handleTabChange(value) {
-    setActiveTab(value);
-  }
 
   // Function to check if the sign-in form is valid
   function checkIfSignInFormIsValid() {
@@ -53,6 +49,7 @@ function AuthIndex() {
   }
   // Function to handle form submission
   console.log(signInFormData);
+  console.log(signUpFormData);
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -72,16 +69,10 @@ function AuthIndex() {
           className="w-full max-w-md bg-white-300 p-5"
         >
           <TabsList className="grid w-full grid-cols-2">
-            <TabsTrigger
-              className="text-blue-300 font-bold cursor-pointer"
-              value="signin"
-            >
+            <TabsTrigger className=" font-bold cursor-pointer" value="signin">
               SIGN IN
             </TabsTrigger>
-            <TabsTrigger
-              value="signup"
-              className="text-blue-300 font-bold cursor-pointer"
-            >
+            <TabsTrigger value="signup" className=" font-bold cursor-pointer">
               SIGN UP
             </TabsTrigger>
           </TabsList>
@@ -116,7 +107,14 @@ function AuthIndex() {
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-2">
-                <CommonForm formControls={signUpFormControls} />
+                <CommonForm
+                  formControls={signUpFormControls}
+                  formData={signUpFormData}
+                  setFormData={setSignUpFormData}
+                  isButtonDisabled={!checkIfSignUpFormIsValid()}
+                  handleSubmit={handleRegisterUser}
+                  buttonText={"Sign Up"}
+                />
               </CardContent>
             </Card>
           </TabsContent>
