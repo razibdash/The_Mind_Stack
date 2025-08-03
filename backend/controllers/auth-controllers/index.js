@@ -60,20 +60,23 @@ const loginUser = async (req, res) => {
         }   
         // Return user data without password generated JWT token
         const token = jwt.sign(
-            { userId: user._id, role: user.role },
+            { _id: user._id, role: user.role,userName: user.userName, userEmail: user.userEmail },
             process.env.JWT_SECRET,
             { expiresIn: process.env.JWT_EXPIRATION }
         );
         res.status(200).json({
             success: true,
             message: "Login successful",
-            user: {
-                id: user._id,
-                userName: user.userName,
-                userEmail: user.userEmail,
-                role: user.role
+            data: {
+                accessToken: token,
+                user: {
+                    _id: user._id,
+                    userName: user.userName,
+                    userEmail: user.userEmail,
+                    role: user.role
+                }
             },
-            accessToken: token
+            
         });
     } catch (error) {
         console.error("Error logging in user:", error);

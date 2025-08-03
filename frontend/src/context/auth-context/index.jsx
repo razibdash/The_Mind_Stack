@@ -26,10 +26,13 @@ function AuthContextProvider({ children }) {
     const data = await loginService(signInFormData);
 
     if (data.success) {
-      sessionStorage.setItem("accessToken", JSON.stringify(data.accessToken));
+      sessionStorage.setItem(
+        "accessToken",
+        JSON.stringify(data.data.accessToken)
+      );
       setAuth({
         authenticate: true,
-        user: data.user,
+        user: data.data.user,
       });
     } else {
       setAuth({
