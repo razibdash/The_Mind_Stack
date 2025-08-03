@@ -83,7 +83,7 @@ function AuthContextProvider({ children }) {
     checkAuthUser();
   }, []);
 
-  console.log(auth, "auth auth auth auth auth");
+  console.log(auth);
 
   return (
     <AuthContext.Provider
