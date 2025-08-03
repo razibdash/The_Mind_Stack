@@ -24,16 +24,12 @@ function AuthContextProvider({ children }) {
   async function handleLoginUser(event) {
     event.preventDefault();
     const data = await loginService(signInFormData);
-    console.log(data, "datadatadatadatadata");
 
     if (data.success) {
-      sessionStorage.setItem(
-        "accessToken",
-        JSON.stringify(data.data.accessToken)
-      );
+      sessionStorage.setItem("accessToken", JSON.stringify(data.accessToken));
       setAuth({
         authenticate: true,
-        user: data.data.user,
+        user: data.user,
       });
     } else {
       setAuth({
