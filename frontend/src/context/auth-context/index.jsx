@@ -1,13 +1,11 @@
-import React from "react";
-import { createContext, useEffect, useState } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { initialSignInFormData, initialSignUpFormData } from "@/config";
 import { checkAuthService, loginService, registerService } from "@/services";
+import { createContext, useEffect, useState } from "react";
 
-// eslint-disable-next-line react-refresh/only-export-components
 export const AuthContext = createContext(null);
 
-function AuthContextProvider({ children }) {
+export default function AuthProvider({ children }) {
   const [signInFormData, setSignInFormData] = useState(initialSignInFormData);
   const [signUpFormData, setSignUpFormData] = useState(initialSignUpFormData);
   const [auth, setAuth] = useState({
@@ -30,6 +28,7 @@ function AuthContextProvider({ children }) {
         "accessToken",
         JSON.stringify(data.data.accessToken)
       );
+      localStorage.setItem("token", data.data.accessToken);
       setAuth({
         authenticate: true,
         user: data.data.user,
@@ -47,10 +46,10 @@ function AuthContextProvider({ children }) {
   async function checkAuthUser() {
     try {
       const data = await checkAuthService();
-      if (data.success) {
+      if (data.success && data && data.user) {
         setAuth({
           authenticate: true,
-          user: data.data.user,
+          user: data.user,
         });
         setLoading(false);
       } else {
@@ -83,8 +82,6 @@ function AuthContextProvider({ children }) {
     checkAuthUser();
   }, []);
 
-  console.log(auth);
-
   return (
     <AuthContext.Provider
       value={{
@@ -96,11 +93,10 @@ function AuthContextProvider({ children }) {
         handleLoginUser,
         auth,
         resetCredentials,
+        loading,
       }}
     >
-      {children}
+      {loading ? <Skeleton /> : children}
     </AuthContext.Provider>
   );
 }
-
-export default AuthContextProvider;

@@ -25,7 +25,7 @@ app.use(bodyParser.json());
 connectDB();
 //Routes configuration
 // API routes
-app.use("/api/auth", authRoutes);
+app.use("/auth", authRoutes);
 
 
 //app listening

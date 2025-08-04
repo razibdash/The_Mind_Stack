@@ -1,26 +1,58 @@
-import React, { use, useContext } from "react";
+import { useContext } from "react";
 import { Button } from "./components/ui/button";
 import { Route, Router, Routes } from "react-router-dom";
 import AuthIndex from "./pages/auth";
 import { AuthContext } from "./context/auth-context";
 import RouteGuard from "./components/route-guard";
+import InstructorDashboardPage from "./pages/instructors";
+import StudentViewCommonLayout from "./components/students-view/common-layout";
+import Header from "./components/students-view/header";
+import { Skeleton } from "./components/ui/skeleton";
 
 function App() {
-  const { auth } = useContext(AuthContext);
-  return (
-    <Routes>
-      <Route
-        path="/auth"
-        element={
-          <RouteGuard
-            authenticated={auth.authenticated}
-            user={auth.user}
-            element={<AuthIndex />}
-          />
-        }
-      />
-    </Routes>
-  );
+  const { auth, loading } = useContext(AuthContext);
+  if (loading) {
+    return <Skeleton />;
+  } else {
+    return (
+      <Routes>
+        <Route
+          path="/auth"
+          element={
+            <RouteGuard
+              authenticated={auth?.authenticate}
+              user={auth?.user}
+              element={<AuthIndex />}
+            />
+          }
+        />
+
+        <Route
+          path="/instructor"
+          element={
+            <RouteGuard
+              authenticated={auth?.authenticate}
+              user={auth?.user}
+              element={<InstructorDashboardPage />}
+            />
+          }
+        />
+
+        <Route
+          path="/"
+          element={
+            <RouteGuard
+              authenticated={auth?.authenticate}
+              user={auth?.user}
+              element={<StudentViewCommonLayout />}
+            />
+          }
+        >
+          <Route path="home" element={<Header />} />
+        </Route>
+      </Routes>
+    );
+  }
 }
 
 export default App;
