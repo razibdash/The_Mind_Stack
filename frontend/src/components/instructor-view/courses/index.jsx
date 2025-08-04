@@ -42,33 +42,26 @@ const InstructorCourses = ({ listOfCourses }) => {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {listOfCourses && listOfCourses.length > 0
-                ? listOfCourses.map((course) => (
-                    <TableRow>
-                      <TableCell className="font-medium">
-                        {course?.title}
-                      </TableCell>
-                      <TableCell>{course?.students?.length}</TableCell>
-                      <TableCell>
-                        ${course?.students?.length * course?.pricing}
-                      </TableCell>
-                      <TableCell className="text-right">
-                        <Button
-                          onClick={() => {
-                            navigate(`/instructor/edit-course/${course?._id}`);
-                          }}
-                          variant="ghost"
-                          size="sm"
-                        >
-                          <Edit className="h-6 w-6" />
-                        </Button>
-                        <Button variant="ghost" size="sm">
-                          <Delete className="h-6 w-6" />
-                        </Button>
-                      </TableCell>
-                    </TableRow>
-                  ))
-                : null}
+              <TableRow>
+                <TableCell className="font-medium">Mern Stack</TableCell>
+                <TableCell className="font-medium">30</TableCell>
+                <TableCell className="font-medium">$3000</TableCell>
+                <TableCell className="text-right flex justify-end">
+                  <Button
+                    onClick={() => {
+                      navigate(`/instructor/edit-course/${course?._id}`);
+                    }}
+                    variant="ghost"
+                    size="sm"
+                    className="cursor-pointer "
+                  >
+                    <Edit className="h-6 w-6 text-[#1E6F9D] " />
+                  </Button>
+                  <Button variant="ghost" size="sm" className="cursor-pointer">
+                    <Delete className="h-6 w-6 text-[#c41247] " />
+                  </Button>
+                </TableCell>
+              </TableRow>
             </TableBody>
           </Table>
         </div>
