@@ -10,6 +10,7 @@ import Header from "./components/students-view/header";
 import { Skeleton } from "./components/ui/skeleton";
 import StudentDashboardPage from "./pages/students/home";
 import NotFound from "./pages/not-found";
+import AddNewCourse from "./components/instructor-view/courses/add-new-course";
 
 function App() {
   const { auth, loading } = useContext(AuthContext);
@@ -36,6 +37,16 @@ function App() {
               authenticated={auth?.authenticate}
               user={auth?.user}
               element={<InstructorDashboardPage />}
+            />
+          }
+        />
+        <Route
+          path="/instructor/create-new-course"
+          element={
+            <RouteGuard
+              authenticated={auth?.authenticate}
+              user={auth?.user}
+              element={<AddNewCourse />}
             />
           }
         />

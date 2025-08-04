@@ -43,7 +43,7 @@ function InstructorDashboardPage() {
               alt="Logo"
               className="w-18 h-18 object-contain"
             />
-            <h1 className="font-bold text-2xl mt-2  text-white">Instructor</h1>
+            <h1 className="font-bold text-2xl mt-3   text-white">Instructor</h1>
           </div>
           <nav className="mt-5">
             {menuItems.map((menuItem) => (
