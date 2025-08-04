@@ -8,6 +8,8 @@ import InstructorDashboardPage from "./pages/instructors";
 import StudentViewCommonLayout from "./components/students-view/common-layout";
 import Header from "./components/students-view/header";
 import { Skeleton } from "./components/ui/skeleton";
+import StudentDashboardPage from "./pages/students/home";
+import NotFound from "./pages/not-found";
 
 function App() {
   const { auth, loading } = useContext(AuthContext);
@@ -48,8 +50,9 @@ function App() {
             />
           }
         >
-          <Route path="home" element={<Header />} />
+          <Route path="home" element={<StudentDashboardPage />} />
         </Route>
+        <Route path="*" element={<NotFound />} />
       </Routes>
     );
   }

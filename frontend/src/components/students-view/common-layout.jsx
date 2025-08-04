@@ -5,13 +5,11 @@ function StudentViewCommonLayout() {
   const location = useLocation();
   return (
     <div>
-      {/* {!location.pathname.includes("course-progress") ? (
+      {!location.pathname.includes("course-progress") ? (
         <StudentViewCommonHeader />
       ) : null}
 
-      <Outlet /> */}
-
-      <h1>StudentViewCommonLayout</h1>
+      <Outlet />
     </div>
   );
 }
