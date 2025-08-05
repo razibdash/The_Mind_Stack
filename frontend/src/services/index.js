@@ -22,7 +22,7 @@ export async function checkAuthService() {
 }
 // ai text generation service
 export async function generateAiTextService(topic) {
-  const { data } = await axiosInstance.post("/api/ai/text-gen", {
+  const { data } = await axiosInstance.post("api/ai/generate-course-description", {
     topic,
   });
 
