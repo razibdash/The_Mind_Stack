@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import axios from "axios";
+import Markdown from "react-markdown";
 import { generateAiTextService } from "@/services";
 const AiTextGenerator = () => {
   const [inputText, setInputText] = useState("");
@@ -11,7 +12,10 @@ const AiTextGenerator = () => {
   const handleGenerate = async () => {
     setLoading(true);
     const res = await generateAiTextService(inputText);
-    setAiText(res.data.description);
+    console.log("AI Response:", res.description);
+    if (res && res.description) {
+      setAiText(res.description);
+    }
     setLoading(false);
   };
 
@@ -35,11 +39,7 @@ const AiTextGenerator = () => {
         </Button>
       </div>
 
-      {aiText && (
-        <div className="p-4 bg-gray-100 dark:bg-gray-800 rounded-xl text-sm text-gray-800 dark:text-gray-200">
-          {aiText}
-        </div>
-      )}
+      {aiText && <Markdown>{aiText}</Markdown>}
     </div>
   );
 };
