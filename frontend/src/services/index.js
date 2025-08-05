@@ -20,3 +20,11 @@ export async function checkAuthService() {
 
   return data;
 }
+// ai text generation service
+export async function generateAiTextService(topic) {
+  const { data } = await axiosInstance.post("/api/ai/text-gen", {
+    topic,
+  });
+
+  return data;
+}

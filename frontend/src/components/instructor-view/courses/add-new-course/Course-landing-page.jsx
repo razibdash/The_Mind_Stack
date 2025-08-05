@@ -11,15 +11,6 @@ const CourseLandingPage = () => {
   const { courseLandingFormData, setCourseLandingFormData } =
     useContext(InstructorContext);
 
-  const [input, setInput] = useState("");
-  const [messages, setMessages] = useState([]);
-
-  const handleSend = () => {
-    if (input.trim() !== "") {
-      setMessages([...messages, input]);
-      setInput("");
-    }
-  };
   return (
     <Card>
       <CardHeader>

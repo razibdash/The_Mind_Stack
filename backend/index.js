@@ -6,6 +6,7 @@ const bodyParser = require("body-parser");
 const app = express();
 //Routes
 const authRoutes = require("./routes/auth-routes/index.js");
+const aiRoutes = require("./routes/Ai/ai-routes.js");
 //Port
 const PORT = process.env.PORT || 5000;
 
@@ -26,6 +27,7 @@ connectDB();
 //Routes configuration
 // API routes
 app.use("/auth", authRoutes);
+app.use("/api/ai", aiRoutes);
 
 
 //app listening

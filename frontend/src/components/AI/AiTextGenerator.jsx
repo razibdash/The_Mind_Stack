@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-
+import axios from "axios";
+import { generateAiTextService } from "@/services";
 const AiTextGenerator = () => {
   const [inputText, setInputText] = useState("");
   const [aiText, setAiText] = useState("");
@@ -9,11 +10,9 @@ const AiTextGenerator = () => {
 
   const handleGenerate = async () => {
     setLoading(true);
-    // Simulated API call or AI response (replace this with your actual AI call)
-    setTimeout(() => {
-      setAiText(`AI Response for: "${inputText}"`);
-      setLoading(false);
-    }, 1000);
+    const res = await generateAiTextService(inputText);
+    setAiText(res.data.description);
+    setLoading(false);
   };
 
   return (
