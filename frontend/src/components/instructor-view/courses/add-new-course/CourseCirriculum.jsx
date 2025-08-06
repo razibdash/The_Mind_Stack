@@ -5,6 +5,12 @@ import { Upload } from "lucide-react";
 import React from "react";
 
 const Curriculum = () => {
+  const isCourseCurriculumFormDataValid = () => {
+    // Implement validation logic here
+  };
+  const handleNewLecture = () => {
+    // Implement logic to handle adding a new lecture
+  };
   return (
     <Card>
       <CardHeader className="flex flex-row justify-between">
@@ -23,7 +29,7 @@ const Curriculum = () => {
             as="label"
             htmlFor="bulk-media-upload"
             variant="outline"
-            className="cursor-pointer"
+            className="cursor-pointer bg-[#3192C7] hover:bg-[#1E6F9D] text-white hover:text-white"
             // onClick={handleOpenBulkUploadDialog}
           >
             <Upload className="w-4 h-5 mr-2" />
@@ -32,7 +38,13 @@ const Curriculum = () => {
         </div>
       </CardHeader>
       <CardContent>
-        <p>Upload your course materials here.</p>
+        <Button
+          disabled={!isCourseCurriculumFormDataValid() || mediaUploadProgress}
+          onClick={handleNewLecture}
+          className="bg-[#3192C7] hover:bg-[#1E6F9D] text-white"
+        >
+          Add Lecture
+        </Button>
       </CardContent>
     </Card>
   );

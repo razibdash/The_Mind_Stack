@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import axios from "axios";
 import Markdown from "react-markdown";
 import { generateAiTextService } from "@/services";
 const AiTextGenerator = () => {
