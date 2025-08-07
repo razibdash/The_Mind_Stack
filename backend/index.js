@@ -7,15 +7,17 @@ const app = express();
 //Routes
 const authRoutes = require("./routes/auth-routes/index.js");
 const aiRoutes = require("./routes/Ai/ai-routes.js");
+const mediaRoutes = require("./routes/instructor-routes/media-routes.js");
 //Port
 const PORT = process.env.PORT || 5000;
-
+//CORS configuration
 cors({
     origin: process.env.CLIENT_URL,
     methods: ["GET", "POST", "PUT", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"],
 
 })
+
 //Middleware
 app.use(cors());
 app.use(express.json());
@@ -24,11 +26,12 @@ app.use(bodyParser.json());
 
 //Database Connection
 connectDB();
-//Routes configuration
+
+
 // API routes
 app.use("/auth", authRoutes);
 app.use("/api/ai", aiRoutes);
-
+app.use("/api/media", mediaRoutes);
 
 //app listening
 app.listen(PORT, () => {
