@@ -28,3 +28,13 @@ export async function generateAiTextService(topic) {
 
   return data;
 }
+
+export async function uploadVideo(videoFormData) {
+  const { data } = await axiosInstance.post("/api/media/upload", videoFormData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+
+  return data;
+}

@@ -4,6 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
 import { courseCurriculumInitialFormData } from "@/config";
 import { InstructorContext } from "@/context/instructor-context";
+import { uploadVideo } from "@/services";
 import { Upload } from "lucide-react";
 import React, { useContext } from "react";
 
@@ -11,14 +12,17 @@ const CourseCurriculum = () => {
   const {
     courseCurriculumFormData,
     setCourseCurriculumFormData,
+
     mediaUploadProgress,
     setMediaUploadProgress,
     mediaUploadProgressPercentage,
     setMediaUploadProgressPercentage,
   } = useContext(InstructorContext);
+
   const isCourseCurriculumFormDataValid = () => {
     // Implement validation logic here
   };
+
   function handleNewLecture() {
     setCourseCurriculumFormData([
       ...courseCurriculumFormData,
@@ -27,6 +31,52 @@ const CourseCurriculum = () => {
       },
     ]);
   }
+
+  function handleCourseTitleChange(event, index) {
+    const { value } = event.target;
+    setCourseCurriculumFormData((prevData) =>
+      prevData.map((item, i) =>
+        i === index ? { ...item, title: value } : item
+      )
+    );
+  }
+  //handleFreePreviewChange
+  const handleFreePreviewChange = (value, index) => {
+    setCourseCurriculumFormData((prevData) =>
+      prevData.map((item, i) =>
+        i === index ? { ...item, freePreview: value } : item
+      )
+    );
+  };
+  const handleLectureVideoUpload = async (event, index) => {
+    const { files } = event.target;
+    const selectedFile = files[0];
+    if (selectedFile) {
+      const videoFormData = new FormData();
+      videoFormData.append("file", selectedFile);
+      try {
+        setMediaUploadProgress(true);
+        const response = await uploadVideo(videoFormData);
+        setMediaUploadProgress(false);
+        console.log("Video upload response:", response);
+        if (response) {
+          let cpyCourseCurriculumFormData = [...courseCurriculumFormData];
+          cpyCourseCurriculumFormData[index] = {
+            ...cpyCourseCurriculumFormData[index],
+            videoUrl: response?.url,
+            public_id: response?.publicId,
+          };
+          setCourseCurriculumFormData(cpyCourseCurriculumFormData);
+          setMediaUploadProgress(false);
+        }
+      } catch (error) {
+        console.error("Error uploading video:", error);
+      }
+    }
+    // Here you would typically handle the file upload to your server or cloud storage
+    //setMediaUploadProgress
+  };
+  console.log(courseCurriculumFormData);
   return (
     <Card>
       <CardHeader className="flex flex-row justify-between">
@@ -70,12 +120,18 @@ const CourseCurriculum = () => {
                   name={`title-${index + 1}`}
                   placeholder="Enter lecture title"
                   className="max-w-96"
-                  // onChange={(event) => handleCourseTitleChange(event, index)}
-                  // value={courseCurriculumFormData[index]?.title}
+                  onChange={(event) => handleCourseTitleChange(event, index)}
+                  value={courseCurriculumFormData[index]?.title}
                 />
                 <div className="flex items-center space-x-2">
                   <Switch
-                    checked={false}
+                    onCheckedChange={(value) =>
+                      handleFreePreviewChange(value, index)
+                    }
+                    className={`${
+                      curriculum.isFreePreview ? "bg-[#3192C7]" : "bg-gray-200"
+                    }`}
+                    checked={curriculum.isFreePreview}
                     id={`freePreview-${index + 1}`}
                     // onCheckedChange={(checked) => handleFreeSwitchChange(checked, index)}
                   />
@@ -89,7 +145,7 @@ const CourseCurriculum = () => {
                   type="file"
                   accept="video/*"
                   className="w-full"
-                  // onChange={(event) => handleLectureDescriptionChange(event, index)}
+                  onChange={(event) => handleLectureVideoUpload(event, index)}
                   // value={courseCurriculumFormData[index]?.description}
                 />
               </div>
