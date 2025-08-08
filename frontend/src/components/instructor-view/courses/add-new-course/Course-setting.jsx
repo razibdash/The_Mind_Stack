@@ -34,6 +34,13 @@ const CourseSettings = () => {
       <CardContent>
         <div className="flex flex-col gap-4">
           <label htmlFor="">Upload Thumbnail</label>
+          {courseLandingFormData.image && (
+            <img
+              src={courseLandingFormData.image}
+              alt="Uploaded Thumbnail"
+              className="rounded"
+            />
+          )}
           <input
             type="file"
             accept="image/*"
