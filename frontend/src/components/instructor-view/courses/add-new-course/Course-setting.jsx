@@ -2,6 +2,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { InstructorContext } from "@/context/instructor-context";
 import React, { useContext } from "react";
 import { uploadVideo } from "@/services";
+import AiImageGenerator from "@/components/AI/AiImageGen";
 const CourseSettings = () => {
   const { courseLandingFormData, setCourseLandingFormData } =
     useContext(InstructorContext);
@@ -31,7 +32,7 @@ const CourseSettings = () => {
       <CardHeader>
         <CardTitle>Course Settings</CardTitle>
       </CardHeader>
-      <CardContent>
+      <CardContent className={"grid grid-cols-2 gap-2"}>
         <div className="flex flex-col gap-4">
           <label htmlFor="">Upload Thumbnail</label>
           {courseLandingFormData.image && (
@@ -48,6 +49,7 @@ const CourseSettings = () => {
             onChange={handleUploadImage}
           />
         </div>
+        <AiImageGenerator />
       </CardContent>
     </Card>
   );
