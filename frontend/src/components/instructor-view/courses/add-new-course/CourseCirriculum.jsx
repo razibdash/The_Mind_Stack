@@ -1,3 +1,4 @@
+import ProgressBar from "@/components/progress-bar";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -12,16 +13,22 @@ const CourseCurriculum = () => {
   const {
     courseCurriculumFormData,
     setCourseCurriculumFormData,
-
     mediaUploadProgress,
     setMediaUploadProgress,
     mediaUploadProgressPercentage,
     setMediaUploadProgressPercentage,
   } = useContext(InstructorContext);
 
-  const isCourseCurriculumFormDataValid = () => {
-    // Implement validation logic here
-  };
+  function isCourseCurriculumFormDataValid() {
+    return courseCurriculumFormData.every((item) => {
+      return (
+        item &&
+        typeof item === "object" &&
+        item.title.trim() !== "" &&
+        item.videoUrl.trim() !== ""
+      );
+    });
+  }
 
   function handleNewLecture() {
     setCourseCurriculumFormData([
@@ -105,12 +112,20 @@ const CourseCurriculum = () => {
       </CardHeader>
       <CardContent>
         <Button
-          // disabled={!isCourseCurriculumFormDataValid() || mediaUploadProgress}
+          disabled={!isCourseCurriculumFormDataValid() || mediaUploadProgress}
           onClick={handleNewLecture}
           className="bg-[#3192C7] hover:bg-[#1E6F9D] text-white"
         >
           Add Lecture
         </Button>
+        <div className="mt-10 space-y-4">
+          {mediaUploadProgress ? (
+            <ProgressBar
+              isMediaUploading={mediaUploadProgress}
+              progress={400}
+            />
+          ) : null}
+        </div>
         <div className="mt-4 space-y-4">
           {courseCurriculumFormData.map((curriculum, index) => (
             <div key={index} className="border p-5 rounded-md">
