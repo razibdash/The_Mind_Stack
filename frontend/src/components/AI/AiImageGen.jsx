@@ -41,7 +41,9 @@ export default function AiImageGenerator() {
 
   return (
     <div className=" p-6 border mt-5 rounded  space-y-4 bg-white dark:bg-gray-900">
-      <h2 className="text-xl font-semibold text-center">AI Image Generator</h2>
+      <h2 className="text-xl font-semibold text-center">
+        AI Thumbnail Generator
+      </h2>
       {/* Input Field + Button */}
       <div className="flex relative">
         <Input

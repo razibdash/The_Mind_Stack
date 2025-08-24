@@ -1,9 +1,12 @@
-require("dotenv").config();
+const dotenv=require('dotenv')
 const express = require("express");
 const cors= require("cors");
-const connectDB = require("./config/db/DB");
+const connectDB = require("./config/db/DB.js");
 const bodyParser = require("body-parser");
+const cloudinary = require("cloudinary").v2;
 const app = express();
+
+dotenv.config()
 //Routes
 const authRoutes = require("./routes/auth-routes/index.js");
 const aiRoutes = require("./routes/Ai/ai-routes.js");
@@ -17,6 +20,12 @@ cors({
     allowedHeaders: ["Content-Type", "Authorization"],
 
 })
+// --- Cloudinary Config ---
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
 
 //Middleware
 app.use(cors());
