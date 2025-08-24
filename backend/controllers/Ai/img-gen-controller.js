@@ -10,7 +10,7 @@ const imageGen= async (req, res) => {
 
     // 1️⃣ Call Groq / LangChain API
     const groqResponse = await axios.post(
-      "https://api.groq.ai/v1/generate-image",
+      "https://api.groq.com/openai/v1/chat/completions",
       {
         prompt: prompt,
         size: "1024x1024"

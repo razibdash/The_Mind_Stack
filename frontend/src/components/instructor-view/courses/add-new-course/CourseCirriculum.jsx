@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
+import VideoPlayer from "@/components/video-player";
 import { courseCurriculumInitialFormData } from "@/config";
 import { InstructorContext } from "@/context/instructor-context";
 import { uploadVideo } from "@/services";
@@ -156,13 +157,29 @@ const CourseCurriculum = () => {
                 </div>
               </div>
               <div className={`mt-4`}>
-                <Input
-                  type="file"
-                  accept="video/*"
-                  className="w-full"
-                  onChange={(event) => handleLectureVideoUpload(event, index)}
-                  // value={courseCurriculumFormData[index]?.description}
-                />
+                {courseCurriculumFormData[index]?.videoUrl ? (
+                  <div className="flex gap-3">
+                    <VideoPlayer
+                      url={courseCurriculumFormData[index]?.videoUrl}
+                    />
+                    <div className="">
+                      <button className="bg-blue-600 text-stone-200 rounded px-4 py-2 mr-2">
+                        replace video
+                      </button>
+                      <button className="bg-red-900 text-stone-200 rounded px-4 py-2">
+                        delete lecture
+                      </button>
+                    </div>
+                  </div>
+                ) : (
+                  <Input
+                    type="file"
+                    accept="video/*"
+                    className="w-full"
+                    onChange={(event) => handleLectureVideoUpload(event, index)}
+                    // value={courseCurriculumFormData[index]?.description}
+                  />
+                )}
               </div>
             </div>
           ))}
