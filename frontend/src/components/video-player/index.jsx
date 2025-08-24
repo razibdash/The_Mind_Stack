@@ -2,7 +2,14 @@ import React, { useRef, useState } from "react";
 import ReactPlayer from "react-player";
 import { Slider } from "../ui/slider";
 import { Button } from "../ui/button";
-import { Pause, Play } from "lucide-react";
+import {
+  Minimize,
+  Pause,
+  Play,
+  RotateCw,
+  Volume2,
+  VolumeX,
+} from "lucide-react";
 const VideoPlayer = ({ width = "100%", height = "100%", url }) => {
   const [playing, setPlaying] = useState(false);
   const [volume, setVolume] = useState(0.5);
@@ -23,6 +30,11 @@ const VideoPlayer = ({ width = "100%", height = "100%", url }) => {
   const handleSeekChange = () => {};
   const handleSeekMouseUp = () => {};
   const handlePlayAndPause = () => {};
+  const handleRewind = () => {};
+  const handleForward = () => {};
+  const handleToggleMute = () => {};
+  const handleFullScreen = () => {};
+
   return (
     <div
       ref={playerContainerRef}
@@ -68,6 +80,59 @@ const VideoPlayer = ({ width = "100%", height = "100%", url }) => {
                   <Pause className="h-6 w-6" />
                 ) : (
                   <Play className="h-6 w-6" />
+                )}
+              </Button>
+              <Button
+                onClick={handleRewind}
+                className="text-white bg-transparent hover:text-white hover:bg-gray-700"
+                variant="ghost"
+                size="icon"
+              >
+                <RotateCcw className="h-6 w-6" />
+              </Button>
+              <Button
+                onClick={handleForward}
+                className="text-white bg-transparent hover:text-white hover:bg-gray-700"
+                variant="ghost"
+                size="icon"
+              >
+                <RotateCw className="h-6 w-6" />
+              </Button>
+              <Button
+                onClick={handleToggleMute}
+                className="text-white bg-transparent hover:text-white hover:bg-gray-700"
+                variant="ghost"
+                size="icon"
+              >
+                {muted ? (
+                  <VolumeX className="h-6 w-6" />
+                ) : (
+                  <Volume2 className="h-6 w-6" />
+                )}
+              </Button>
+              <Slider
+                value={[volume * 100]}
+                max={100}
+                step={1}
+                onValueChange={(value) => handleVolumeChange([value[0] / 100])}
+                className="w-24 "
+              />
+            </div>
+            <div className="flex items-center space-x-2">
+              <div className="text-white">
+                {formatTime(played * (playerRef?.current?.getDuration() || 0))}/{" "}
+                {formatTime(playerRef?.current?.getDuration() || 0)}
+              </div>
+              <Button
+                className="text-white bg-transparent hover:text-white hover:bg-gray-700"
+                variant="ghost"
+                size="icon"
+                onClick={handleFullScreen}
+              >
+                {isFullScreen ? (
+                  <Minimize className="h-6 w-6" />
+                ) : (
+                  <Maximize className="h-6 w-6" />
                 )}
               </Button>
             </div>
