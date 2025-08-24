@@ -41,7 +41,7 @@ const VideoPlayer = ({ width = "100%", height = "100%", url }) => {
       className={`reletive bg-gray-500 rounded-lg overflow-hidden shadow transition-all duration-300 case-in-out ${
         isFullScreen ? "w-screen h-screen" : ""
       }`}
-      style={(width, height)}
+      style={{ width, height }}
     >
       <ReactPlayer
         ref={playerRef}
