@@ -61,13 +61,13 @@ function AuthIndex() {
       <div className="flex   items-center justify-center min-h-screen bg-background">
         <Tabs
           value={activeTab}
-          defaultValue="signin"
+          defaultValue="login"
           onValueChange={handleTabChange}
           className="w-full max-w-md bg-white-300 p-5"
         >
           <TabsList className="grid w-full grid-cols-2">
-            <TabsTrigger className=" font-bold cursor-pointer" value="signin">
-              SIGN IN
+            <TabsTrigger className=" font-bold cursor-pointer" value="login">
+              LOGIN
             </TabsTrigger>
             <TabsTrigger value="signup" className=" font-bold cursor-pointer">
               SIGN UP
