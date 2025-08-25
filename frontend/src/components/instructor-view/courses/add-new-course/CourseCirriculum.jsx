@@ -161,6 +161,8 @@ const CourseCurriculum = () => {
                   <div className="flex gap-3">
                     <VideoPlayer
                       url={courseCurriculumFormData[index]?.videoUrl}
+                      width="450px"
+                      height="200px"
                     />
                     <div className="">
                       <button className="bg-blue-600 text-stone-200 rounded px-4 py-2 mr-2">
