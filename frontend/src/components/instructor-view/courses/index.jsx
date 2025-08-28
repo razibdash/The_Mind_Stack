@@ -42,26 +42,40 @@ const InstructorCourses = ({ listOfCourses }) => {
               </TableRow>
             </TableHeader>
             <TableBody>
-              <TableRow>
-                <TableCell className="font-medium">Mern Stack</TableCell>
-                <TableCell className="font-medium">30</TableCell>
-                <TableCell className="font-medium">$3000</TableCell>
-                <TableCell className="text-right flex justify-end">
-                  <Button
-                    onClick={() => {
-                      navigate(`/instructor/edit-course/${course?._id}`);
-                    }}
-                    variant="ghost"
-                    size="sm"
-                    className="cursor-pointer "
-                  >
-                    <Edit className="h-6 w-6 text-[#1E6F9D] " />
-                  </Button>
-                  <Button variant="ghost" size="sm" className="cursor-pointer">
-                    <Delete className="h-6 w-6 text-[#c41247] " />
-                  </Button>
-                </TableCell>
-              </TableRow>
+              {listOfCourses.length > 0
+                ? listOfCourses.map((course) => (
+                    <TableRow key={course._id}>
+                      <TableCell className="font-medium">
+                        {course.title}
+                      </TableCell>
+                      <TableCell className="font-medium">
+                        {course.students?.length}
+                      </TableCell>
+                      <TableCell className="font-medium">
+                        ${course?.pricing}
+                      </TableCell>
+                      <TableCell className="text-right flex justify-end">
+                        <Button
+                          onClick={() => {
+                            navigate(`/instructor/edit-course/${course?._id}`);
+                          }}
+                          variant="ghost"
+                          size="sm"
+                          className="cursor-pointer "
+                        >
+                          <Edit className="h-6 w-6 text-[#1E6F9D] " />
+                        </Button>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          className="cursor-pointer"
+                        >
+                          <Delete className="h-6 w-6 text-[#c41247] " />
+                        </Button>
+                      </TableCell>
+                    </TableRow>
+                  ))
+                : null}
             </TableBody>
           </Table>
         </div>
