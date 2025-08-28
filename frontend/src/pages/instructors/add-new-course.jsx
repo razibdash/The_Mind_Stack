@@ -6,8 +6,17 @@ import { Card, CardContent } from "@/components/ui/card";
 import { TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { AuthContext } from "@/context/auth-context";
 import { InstructorContext } from "@/context/instructor-context";
+import {
+  addNewCourseService,
+  fetchInstructorCourseDetailsService,
+  updateCourseByIdService,
+} from "@/services";
+import {
+  courseCurriculumInitialFormData,
+  courseLandingInitialFormData,
+} from "@/config";
 import { Tabs } from "@radix-ui/react-tabs";
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
 const AddNewCourse = () => {
@@ -57,12 +66,72 @@ const AddNewCourse = () => {
 
     return hasFreePreview;
   }
+  //
+  async function handleSubmit() {
+    const courseFinalFormData = {
+      instructorId: auth?.user?._id,
+      instructorName: auth?.user?.userName,
+      date: new Date(),
+      ...courseLandingFormData,
+      students: [],
+      curriculum: courseCurriculumFormData,
+      isPublised: true,
+    };
+
+    const response =
+      currentEditedCourseId !== null
+        ? await updateCourseByIdService(
+            currentEditedCourseId,
+            courseFinalFormData
+          )
+        : await addNewCourseService(courseFinalFormData);
+
+    if (response?.success) {
+      setCourseLandingFormData(courseLandingInitialFormData);
+      setCourseCurriculumFormData(courseCurriculumInitialFormData);
+      navigate(-1);
+      setCurrentEditedCourseId(null);
+    }
+
+    console.log(courseFinalFormData, "courseFinalFormData");
+  }
+
+  async function fetchCurrentCourseDetails() {
+    const response = await fetchInstructorCourseDetailsService(
+      currentEditedCourseId
+    );
+
+    if (response?.success) {
+      const setCourseFormData = Object.keys(
+        courseLandingInitialFormData
+      ).reduce((acc, key) => {
+        acc[key] = response?.data[key] || courseLandingInitialFormData[key];
+
+        return acc;
+      }, {});
+
+      console.log(setCourseFormData, response?.data, "setCourseFormData");
+      setCourseLandingFormData(setCourseFormData);
+      setCourseCurriculumFormData(response?.data?.curriculum);
+    }
+
+    console.log(response, "response");
+  }
+
+  useEffect(() => {
+    if (currentEditedCourseId !== null) fetchCurrentCourseDetails();
+  }, [currentEditedCourseId]);
+
+  useEffect(() => {
+    if (params?.courseId) setCurrentEditedCourseId(params?.courseId);
+  }, [params?.courseId]);
   return (
     <div className="container mx-auto p-4">
       <div className="flex justify-between">
         <h1 className="text-3xl font-extrabold mb-5">Create a new course</h1>
         <Button
           disabled={!validateFormData()}
+          onClick={handleSubmit}
           className="text-sm tracking-wider bg-[#3192C7] hover:bg-[#1E6F9D] cursor-pointer font-bold px-8"
         >
           SUBMIT
