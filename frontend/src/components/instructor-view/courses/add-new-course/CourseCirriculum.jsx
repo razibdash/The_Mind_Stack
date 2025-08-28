@@ -6,7 +6,7 @@ import { Switch } from "@/components/ui/switch";
 import VideoPlayer from "@/components/video-player";
 import { courseCurriculumInitialFormData } from "@/config";
 import { InstructorContext } from "@/context/instructor-context";
-import { uploadVideo } from "@/services";
+import { mediaDeleteService, uploadVideo } from "@/services";
 import { Upload } from "lucide-react";
 import React, { useContext } from "react";
 
@@ -84,7 +84,44 @@ const CourseCurriculum = () => {
     // Here you would typically handle the file upload to your server or cloud storage
     //setMediaUploadProgress
   };
-  console.log(courseCurriculumFormData);
+  async function handleReplaceVideo(currentIndex) {
+    let cpyCourseCurriculumFormData = [...courseCurriculumFormData];
+    const getCurrentVideoPublicId =
+      cpyCourseCurriculumFormData[currentIndex].public_id;
+
+    const deleteCurrentMediaResponse = await mediaDeleteService(
+      getCurrentVideoPublicId
+    );
+    console.log(deleteCurrentMediaResponse);
+    if (deleteCurrentMediaResponse?.message === "Media deleted successfully") {
+      cpyCourseCurriculumFormData[currentIndex] = {
+        ...cpyCourseCurriculumFormData[currentIndex],
+        videoUrl: "",
+        public_id: "",
+      };
+
+      setCourseCurriculumFormData(cpyCourseCurriculumFormData);
+    }
+  }
+  async function handleDeleteLecture(currentIndex) {
+    let cpyCourseCurriculumFormData = [...courseCurriculumFormData];
+    const getCurrentVideoPublicId =
+      cpyCourseCurriculumFormData[currentIndex].public_id;
+
+    const deleteCurrentMediaResponse = await mediaDeleteService(
+      getCurrentVideoPublicId
+    );
+    console.log(deleteCurrentMediaResponse);
+    if (deleteCurrentMediaResponse?.success) {
+      cpyCourseCurriculumFormData[currentIndex] = {
+        ...cpyCourseCurriculumFormData[currentIndex],
+        videoUrl: "",
+        public_id: "",
+      };
+
+      setCourseCurriculumFormData(cpyCourseCurriculumFormData);
+    }
+  }
   return (
     <Card>
       <CardHeader className="flex flex-row justify-between">
@@ -165,10 +202,16 @@ const CourseCurriculum = () => {
                       height="200px"
                     />
                     <div className="">
-                      <button className="bg-blue-600 text-stone-200 rounded px-4 py-2 mr-2">
+                      <button
+                        onClick={() => handleReplaceVideo(index)}
+                        className="bg-blue-600 text-stone-200 rounded px-4 py-2 mr-2 cursor-pointer"
+                      >
                         replace video
                       </button>
-                      <button className="bg-red-900 text-stone-200 rounded px-4 py-2">
+                      <button
+                        onClick={() => handleDeleteLecture(index)}
+                        className="bg-red-900 text-stone-200 rounded px-4 py-2"
+                      >
                         delete lecture
                       </button>
                     </div>

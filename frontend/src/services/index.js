@@ -38,3 +38,8 @@ export async function uploadVideo(videoFormData) {
 
   return data;
 }
+export async function mediaDeleteService(id) {
+  const { data } = await axiosInstance.delete(`/api/media/delete/${id}`);
+
+  return data;
+}
