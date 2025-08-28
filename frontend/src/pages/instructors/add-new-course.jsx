@@ -4,15 +4,67 @@ import Curriculum from "@/components/instructor-view/courses/add-new-course/Cour
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { AuthContext } from "@/context/auth-context";
+import { InstructorContext } from "@/context/instructor-context";
 import { Tabs } from "@radix-ui/react-tabs";
-import React from "react";
+import React, { useContext } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 
 const AddNewCourse = () => {
+  const {
+    courseLandingFormData,
+    courseCurriculumFormData,
+    setCourseLandingFormData,
+    setCourseCurriculumFormData,
+    currentEditedCourseId,
+    setCurrentEditedCourseId,
+  } = useContext(InstructorContext);
+
+  const { auth } = useContext(AuthContext);
+  const navigate = useNavigate();
+  const params = useParams();
+
+  console.log(params);
+  function isEmpty(value) {
+    if (Array.isArray(value)) {
+      return value.length === 0;
+    }
+
+    return value === "" || value === null || value === undefined;
+  }
+  function validateFormData() {
+    for (const key in courseLandingFormData) {
+      if (isEmpty(courseLandingFormData[key])) {
+        return false;
+      }
+    }
+
+    let hasFreePreview = false;
+
+    for (const item of courseCurriculumFormData) {
+      if (
+        isEmpty(item.title) ||
+        isEmpty(item.videoUrl) ||
+        isEmpty(item.public_id)
+      ) {
+        return false;
+      }
+
+      if (item.freePreview) {
+        hasFreePreview = true; //found at least one free preview
+      }
+    }
+
+    return hasFreePreview;
+  }
   return (
     <div className="container mx-auto p-4">
       <div className="flex justify-between">
         <h1 className="text-3xl font-extrabold mb-5">Create a new course</h1>
-        <Button className="text-sm tracking-wider bg-[#3192C7] hover:bg-[#1E6F9D] cursor-pointer font-bold px-8">
+        <Button
+          disabled={!validateFormData()}
+          className="text-sm tracking-wider bg-[#3192C7] hover:bg-[#1E6F9D] cursor-pointer font-bold px-8"
+        >
           SUBMIT
         </Button>
       </div>
