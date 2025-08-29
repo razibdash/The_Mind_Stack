@@ -127,34 +127,63 @@ const AddNewCourse = () => {
   }, [params?.courseId]);
   return (
     <div className="container mx-auto p-4">
-      <div className="flex justify-between">
-        <h1 className="text-3xl font-extrabold mb-5">Create a new course</h1>
+      {/* Header Section */}
+      <div className="flex flex-col md:flex-row justify-between items-center mb-6">
+        <h1 className="text-3xl font-extrabold mb-4 md:mb-0 text-gray-800">
+          Create a New Course
+        </h1>
         <Button
           disabled={!validateFormData()}
           onClick={handleSubmit}
-          className="text-sm tracking-wider bg-[#3192C7] hover:bg-[#1E6F9D] cursor-pointer font-bold px-8"
+          className="px-6 py-3 rounded-lg bg-gradient-to-r from-blue-500 to-teal-400 
+                    text-white font-bold tracking-wide shadow-lg hover:scale-105 
+                    hover:shadow-xl transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
         >
           SUBMIT
         </Button>
       </div>
-      <Card>
-        <CardContent>
-          <div className="container mx-auto p-4">
+
+      {/* Main Card */}
+      <Card className="shadow-2xl rounded-2xl overflow-hidden border border-gray-200">
+        <CardContent className="p-6 bg-white">
+          <div className="container mx-auto">
             <Tabs defaultValue="curriculum" className="space-y-4">
-              <TabsList>
-                <TabsTrigger value="curriculum">Curriculum</TabsTrigger>
-                <TabsTrigger value="course-landing-page">
+              {/* Tabs List with gradient active indicator */}
+              <TabsList className="bg-gray-100 rounded-lg shadow-inner p-1 flex space-x-2">
+                <TabsTrigger
+                  value="curriculum"
+                  className="px-4 py-2 rounded-lg text-gray-700 font-semibold 
+                            hover:bg-gradient-to-r hover:from-blue-500 hover:to-teal-400 
+                            hover:text-white transition-all duration-300"
+                >
+                  Curriculum
+                </TabsTrigger>
+                <TabsTrigger
+                  value="course-landing-page"
+                  className="px-4 py-2 rounded-lg text-gray-700 font-semibold 
+                            hover:bg-gradient-to-r hover:from-blue-500 hover:to-teal-400 
+                            hover:text-white transition-all duration-300"
+                >
                   Course Landing Page
                 </TabsTrigger>
-                <TabsTrigger value="settings">Settings</TabsTrigger>
+                <TabsTrigger
+                  value="settings"
+                  className="px-4 py-2 rounded-lg text-gray-700 font-semibold 
+                            hover:bg-gradient-to-r hover:from-blue-500 hover:to-teal-400 
+                            hover:text-white transition-all duration-300"
+                >
+                  Settings
+                </TabsTrigger>
               </TabsList>
-              <TabsContent value="curriculum">
+
+              {/* Tabs Content */}
+              <TabsContent value="curriculum" className="mt-4">
                 <Curriculum />
               </TabsContent>
-              <TabsContent value="course-landing-page">
+              <TabsContent value="course-landing-page" className="mt-4">
                 <CourseLandingPage />
               </TabsContent>
-              <TabsContent value="settings">
+              <TabsContent value="settings" className="mt-4">
                 <CourseSettings />
               </TabsContent>
             </Tabs>

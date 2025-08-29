@@ -27,7 +27,7 @@ const InstructorCourses = ({ listOfCourses }) => {
         <CardTitle className="text-3xl font-extrabold">All Courses</CardTitle>
         <Button
           onClick={() => navigate("/instructor/create-new-course")}
-          className="px-6 py-3 bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 
+          className="px-6 py-3 bg-gradient-to-r from-blue-500 to-teal-400   
                      text-white font-semibold rounded-lg shadow-lg transform transition-all
                      hover:scale-105 hover:shadow-xl active:scale-95"
         >
