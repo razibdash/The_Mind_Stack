@@ -123,56 +123,68 @@ const CourseCurriculum = () => {
     }
   }
   return (
-    <Card>
-      <CardHeader className="flex flex-row justify-between">
-        <CardTitle>Create Course Curriculum</CardTitle>
+    <Card className="shadow-2xl rounded-2xl overflow-hidden border border-gray-200">
+      {/* Gradient Header */}
+      <CardHeader className="flex flex-row justify-between items-center bg-gradient-to-r from-blue-500 to-teal-400 text-white p-6">
+        <CardTitle className="text-2xl font-extrabold">
+          Create Course Curriculum
+        </CardTitle>
+
         <div>
           <Input
             type="file"
-            // ref={bulkUploadInputRef}
             accept="video/*"
             multiple
             className="hidden"
             id="bulk-media-upload"
-            // onChange={handleMediaBulkUpload}
           />
           <Button
             as="label"
             htmlFor="bulk-media-upload"
-            variant="outline"
-            className="cursor-pointer bg-[#3192C7] hover:bg-[#1E6F9D] text-white hover:text-white"
-            // onClick={handleOpenBulkUploadDialog}
+            className="cursor-pointer flex items-center px-4 py-2 rounded-lg bg-white text-blue-600 font-semibold
+                      hover:bg-blue-600 hover:text-white transition-all duration-300"
           >
             <Upload className="w-4 h-5 mr-2" />
             Bulk Upload
           </Button>
         </div>
       </CardHeader>
-      <CardContent>
+
+      <CardContent className="bg-white p-6">
+        {/* Add Lecture Button */}
         <Button
           disabled={!isCourseCurriculumFormDataValid() || mediaUploadProgress}
           onClick={handleNewLecture}
-          className="bg-[#3192C7] hover:bg-[#1E6F9D] text-white"
+          className="mb-6 px-6 py-3 rounded-lg bg-gradient-to-r from-blue-500 to-teal-400 
+                    text-white font-semibold shadow-lg hover:scale-105 transition-all duration-300 
+                    disabled:opacity-50 disabled:cursor-not-allowed"
         >
           Add Lecture
         </Button>
-        <div className="mt-10 space-y-4">
-          {mediaUploadProgress ? (
+
+        {/* Media Upload Progress */}
+        <div className="mt-6 space-y-4">
+          {mediaUploadProgress && (
             <ProgressBar
               isMediaUploading={mediaUploadProgress}
               progress={400}
             />
-          ) : null}
+          )}
         </div>
-        <div className="mt-4 space-y-4">
+
+        {/* Curriculum List */}
+        <div className="mt-6 space-y-6">
           {courseCurriculumFormData.map((curriculum, index) => (
-            <div key={index} className="border p-5 rounded-md">
-              <div className="flex gap-5 items-center">
-                <h3 className="font-semibold">Lecture {index + 1}</h3>
+            <div
+              key={index}
+              className="border rounded-2xl p-5 shadow-md hover:shadow-xl transition-all duration-300"
+            >
+              <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                <h3 className="font-semibold text-lg">Lecture {index + 1}</h3>
                 <Input
                   name={`title-${index + 1}`}
                   placeholder="Enter lecture title"
-                  className="max-w-96"
+                  className="max-w-md"
                   onChange={(event) => handleCourseTitleChange(event, index)}
                   value={courseCurriculumFormData[index]?.title}
                 />
@@ -182,37 +194,45 @@ const CourseCurriculum = () => {
                       handleFreePreviewChange(value, index)
                     }
                     className={`${
-                      curriculum.isFreePreview ? "bg-[#3192C7]" : "bg-gray-200"
-                    }`}
+                      curriculum.isFreePreview
+                        ? "bg-gradient-to-r from-blue-500 to-teal-400"
+                        : "bg-gray-200"
+                    } transition-all duration-300`}
                     checked={curriculum.isFreePreview}
                     id={`freePreview-${index + 1}`}
-                    // onCheckedChange={(checked) => handleFreeSwitchChange(checked, index)}
                   />
-                  <label htmlFor={`freePreview-${index + 1}`}>
+                  <label
+                    htmlFor={`freePreview-${index + 1}`}
+                    className="font-medium"
+                  >
                     Free Preview
                   </label>
                 </div>
               </div>
-              <div className={`mt-4`}>
+
+              <div className="mt-4">
                 {courseCurriculumFormData[index]?.videoUrl ? (
-                  <div className="flex gap-3">
+                  <div className="flex flex-col md:flex-row md:items-start gap-4">
                     <VideoPlayer
                       url={courseCurriculumFormData[index]?.videoUrl}
                       width="450px"
                       height="200px"
+                      className="rounded-lg shadow-md"
                     />
-                    <div className="">
+                    <div className="flex flex-col gap-2">
                       <button
                         onClick={() => handleReplaceVideo(index)}
-                        className="bg-blue-600 text-stone-200 rounded px-4 py-2 mr-2 cursor-pointer"
+                        className="px-4 py-2 rounded-lg bg-gradient-to-r from-blue-500 to-teal-400 
+                                  text-white font-semibold shadow hover:scale-105 transition-all duration-300"
                       >
-                        replace video
+                        Replace Video
                       </button>
                       <button
                         onClick={() => handleDeleteLecture(index)}
-                        className="bg-red-900 text-stone-200 rounded px-4 py-2"
+                        className="px-4 py-2 rounded-lg bg-gradient-to-r from-red-600 to-red-800 
+                                  text-white font-semibold shadow hover:scale-105 transition-all duration-300"
                       >
-                        delete lecture
+                        Delete Lecture
                       </button>
                     </div>
                   </div>
@@ -220,9 +240,9 @@ const CourseCurriculum = () => {
                   <Input
                     type="file"
                     accept="video/*"
-                    className="w-full"
+                    className="w-full rounded-lg border border-gray-300 p-2 transition-all duration-300 
+                              hover:border-blue-400 focus:outline-none focus:ring-2 focus:ring-teal-400"
                     onChange={(event) => handleLectureVideoUpload(event, index)}
-                    // value={courseCurriculumFormData[index]?.description}
                   />
                 )}
               </div>
