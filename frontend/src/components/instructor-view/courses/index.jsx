@@ -19,21 +19,26 @@ import { useNavigate } from "react-router-dom";
 
 const InstructorCourses = ({ listOfCourses }) => {
   const navigate = useNavigate();
+
   return (
-    <Card>
-      <CardHeader className="flex justify-between flex-row items-center">
+    <Card className="shadow-xl border border-gray-200 rounded-2xl overflow-hidden">
+      {/* Header with gradient */}
+      <CardHeader className="flex justify-between items-center bg-gradient-to-r from-blue-500 to-teal-400 text-white p-6">
         <CardTitle className="text-3xl font-extrabold">All Courses</CardTitle>
         <Button
           onClick={() => navigate("/instructor/create-new-course")}
-          className="p-6 bg-[#3192C7] hover:bg-[#1E6F9D] cursor-pointer"
+          className="px-6 py-3 bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 
+                     text-white font-semibold rounded-lg shadow-lg transform transition-all
+                     hover:scale-105 hover:shadow-xl active:scale-95"
         >
           Create New Course
         </Button>
       </CardHeader>
-      <CardContent>
+
+      <CardContent className="bg-white">
         <div className="overflow-x-auto">
-          <Table>
-            <TableHeader>
+          <Table className="min-w-full divide-y divide-gray-200">
+            <TableHeader className="bg-gray-100">
               <TableRow>
                 <TableHead>Course</TableHead>
                 <TableHead>Students</TableHead>
@@ -41,41 +46,57 @@ const InstructorCourses = ({ listOfCourses }) => {
                 <TableHead className="text-right">Actions</TableHead>
               </TableRow>
             </TableHeader>
+
             <TableBody>
-              {listOfCourses.length > 0
-                ? listOfCourses.map((course) => (
-                    <TableRow key={course._id}>
-                      <TableCell className="font-medium">
-                        {course.title}
-                      </TableCell>
-                      <TableCell className="font-medium">
-                        {course.students?.length}
-                      </TableCell>
-                      <TableCell className="font-medium">
-                        ${course?.pricing}
-                      </TableCell>
-                      <TableCell className="text-right flex justify-end">
-                        <Button
-                          onClick={() => {
-                            navigate(`/instructor/edit-course/${course?._id}`);
-                          }}
-                          variant="ghost"
-                          size="sm"
-                          className="cursor-pointer "
-                        >
-                          <Edit className="h-6 w-6 text-[#1E6F9D] " />
-                        </Button>
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          className="cursor-pointer"
-                        >
-                          <Delete className="h-6 w-6 text-[#c41247] " />
-                        </Button>
-                      </TableCell>
-                    </TableRow>
-                  ))
-                : null}
+              {listOfCourses.length > 0 ? (
+                listOfCourses.map((course) => (
+                  <TableRow
+                    key={course._id}
+                    className="transition-all duration-300 hover:bg-gradient-to-r 
+                               hover:from-blue-50 hover:to-teal-50"
+                  >
+                    <TableCell className="font-medium">
+                      {course.title}
+                    </TableCell>
+                    <TableCell className="font-medium">
+                      {course.students?.length}
+                    </TableCell>
+                    <TableCell className="font-medium">
+                      ${course?.pricing}
+                    </TableCell>
+                    <TableCell className="text-right flex justify-end gap-2">
+                      <Button
+                        onClick={() =>
+                          navigate(`/instructor/edit-course/${course?._id}`)
+                        }
+                        variant="ghost"
+                        size="sm"
+                        className="p-2 rounded-full bg-gradient-to-r from-blue-300 to-teal-300 transition-all duration-300
+                                   hover:bg-gradient-to-r hover:from-blue-300 hover:to-teal-300"
+                      >
+                        <Edit className="h-6 w-6 text-white hover:text-gray-900" />
+                      </Button>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        className="p-2 rounded-full bg-gradient-to-r from-red-400 to-pink-400 transition-all duration-300
+                                   hover:bg-gradient-to-r hover:from-red-400 hover:to-pink-400"
+                      >
+                        <Delete className="h-6 w-6 text-white hover:text-gray-900" />
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                ))
+              ) : (
+                <TableRow>
+                  <TableCell
+                    colSpan={4}
+                    className="text-center py-6 text-gray-400"
+                  >
+                    No courses found
+                  </TableCell>
+                </TableRow>
+              )}
             </TableBody>
           </Table>
         </div>
