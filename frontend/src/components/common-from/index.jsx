@@ -20,7 +20,7 @@ function CommonForm({
       <Button
         disabled={isButtonDisabled}
         type="submit"
-        className="mt-5 w-full bg-[#3192C7] hover:bg-[#1A6F8B] text-white"
+        className="mt-5 w-full bg-gradient-to-r from-blue-500 to-teal-400 text-white"
       >
         {buttonText || "Submit"}
       </Button>

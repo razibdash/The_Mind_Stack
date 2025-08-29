@@ -50,34 +50,48 @@ function AuthIndex() {
 
   return (
     <div className="flex flex-col min-h-screen">
-      <header className="px-4 lg:px-6 h-14 flex items-center border-b">
-        <Link to={"/"} className="flex items-center justify-center">
-          <img src="/logo1.PNG" className=" text-xl h-8 w-8 lg:h-10 lg:w-10" />
-          <span className=" mt-2 lg:text-xl font-extrabold text-[#3192C7]">
+      {/* Header */}
+      <header className="px-4 lg:px-6 h-16 flex items-center border-b bg-white/70 backdrop-blur-md shadow-sm">
+        <Link to={"/"} className="flex items-center space-x-2">
+          <img src="/logo1.PNG" className="h-10 w-10 rounded-lg shadow-md" />
+          <span className="text-xl lg:text-2xl font-extrabold text-[#3192C7] tracking-wide">
             Mind Stack
           </span>
         </Link>
       </header>
-      <div className="flex   items-center justify-center min-h-screen bg-background">
+
+      {/* Main Section */}
+      <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-blue-50 via-white to-teal-50">
         <Tabs
           value={activeTab}
           defaultValue="signin"
           onValueChange={handleTabChange}
-          className="w-full max-w-md bg-white-300 p-5"
+          className="w-full max-w-md p-4"
         >
-          <TabsList className="grid w-full grid-cols-2">
-            <TabsTrigger className=" font-bold cursor-pointer" value="signin">
+          {/* Tabs List */}
+          <TabsList className="grid w-full grid-cols-2 rounded-xl bg-gray-100 ">
+            <TabsTrigger
+              className={` font-bold rounded-lg transition-all duration-300 data-[state=active]:bg-gradient-to-r data-[state=active]:from-blue-500 data-[state=active]:to-teal-400 data-[state=active]:text-white`}
+              value="signin"
+            >
               LOGIN
             </TabsTrigger>
-            <TabsTrigger value="signup" className=" font-bold cursor-pointer">
+            <TabsTrigger
+              className={` font-bold rounded-lg transition-all duration-300 data-[state=active]:bg-gradient-to-r data-[state=active]:from-blue-500 data-[state=active]:to-teal-400 data-[state=active]:text-white`}
+              value="signup"
+            >
               SIGN UP
             </TabsTrigger>
           </TabsList>
+
+          {/* Sign In Card */}
           <TabsContent value="signin">
-            <Card className="p-6 space-y-4">
+            <Card className="p-6 mt-4 space-y-4 rounded-2xl shadow-xl border border-gray-200 bg-white/80 backdrop-blur-md">
               <CardHeader>
-                <CardTitle className="text-[#3192C7]">Welcome Back!</CardTitle>
-                <CardDescription>
+                <CardTitle className="text-[#3192C7] text-2xl font-extrabold">
+                  Welcome Back! 👋
+                </CardTitle>
+                <CardDescription className="text-gray-600">
                   Please enter your credentials to continue
                 </CardDescription>
               </CardHeader>
@@ -93,13 +107,15 @@ function AuthIndex() {
               </CardContent>
             </Card>
           </TabsContent>
+
+          {/* Sign Up Card */}
           <TabsContent value="signup">
-            <Card className="p-6 space-y-4">
+            <Card className="p-6 mt-4 space-y-4 rounded-2xl shadow-xl border border-gray-200 bg-white/80 backdrop-blur-md">
               <CardHeader>
-                <CardTitle className="text-[#3192C7]">
-                  Create a new account
+                <CardTitle className="text-[#3192C7] text-2xl font-extrabold">
+                  Create a New Account 🚀
                 </CardTitle>
-                <CardDescription>
+                <CardDescription className="text-gray-600">
                   Enter your details to get started
                 </CardDescription>
               </CardHeader>
