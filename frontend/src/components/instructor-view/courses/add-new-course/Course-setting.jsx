@@ -28,28 +28,46 @@ const CourseSettings = () => {
   };
   console.log("Course Landing Form Data:", courseLandingFormData);
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Course Settings</CardTitle>
+    <Card className="shadow-2xl rounded-2xl overflow-hidden border border-gray-200">
+      {/* Gradient Header */}
+      <CardHeader className="bg-gradient-to-r from-blue-500 to-teal-400 text-white p-6">
+        <CardTitle className="text-2xl font-extrabold">
+          Course Settings
+        </CardTitle>
       </CardHeader>
-      <CardContent className={"grid grid-cols-2 gap-2"}>
+
+      {/* Content */}
+      <CardContent className="grid grid-cols-2 gap-6 bg-white p-6">
+        {/* Upload Thumbnail Section */}
         <div className="flex flex-col gap-4">
-          <label htmlFor="">Upload Thumbnail</label>
+          <label className="font-semibold text-gray-700">
+            Upload Thumbnail
+          </label>
+
           {courseLandingFormData.image && (
             <img
               src={courseLandingFormData.image}
               alt="Uploaded Thumbnail"
-              className="rounded"
+              className="rounded-lg shadow-lg transition-all duration-300 hover:scale-105"
             />
           )}
+
           <input
             type="file"
             accept="image/*"
-            className="border border-gray-300 rounded-md p-2"
+            className="border border-gray-300 rounded-lg p-2 transition-all duration-300 
+                      hover:border-blue-400 focus:outline-none focus:ring-2 focus:ring-teal-400"
             onChange={handleUploadImage}
           />
         </div>
-        <AiImageGenerator />
+
+        {/* AI Image Generator Section */}
+        <div
+          className="bg-gradient-to-r from-blue-500 to-teal-400 rounded-lg p-4 shadow-inner 
+                        transition-all duration-300 hover:shadow-xl hover:scale-105 text-white"
+        >
+          <AiImageGenerator />
+        </div>
       </CardContent>
     </Card>
   );

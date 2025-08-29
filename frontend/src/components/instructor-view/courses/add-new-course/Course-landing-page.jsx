@@ -12,20 +12,35 @@ const CourseLandingPage = () => {
     useContext(InstructorContext);
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Course Landing Page</CardTitle>
+    <Card className="shadow-2xl rounded-2xl overflow-hidden border border-gray-200">
+      {/* Gradient Header */}
+      <CardHeader className="bg-gradient-to-r from-blue-500 to-teal-400 text-white p-6">
+        <CardTitle className="text-3xl font-extrabold">
+          Course Landing Page
+        </CardTitle>
       </CardHeader>
-      <CardContent className={"grid grid-cols-2 gap-2"}>
-        <FormControls
-          title="Course Title"
-          description="Course Description"
-          onSubmit={(data) => console.log(data)}
-          formControls={courseLandingPageFormControls}
-          formData={courseLandingFormData}
-          setFormData={setCourseLandingFormData}
-        />
-        <AiTextGenerator />
+
+      {/* Content */}
+      <CardContent className="grid grid-cols-2 gap-6 bg-white p-6">
+        {/* Form Section */}
+        <div className="flex flex-col gap-4">
+          <FormControls
+            title="Course Title"
+            description="Course Description"
+            onSubmit={(data) => console.log(data)}
+            formControls={courseLandingPageFormControls}
+            formData={courseLandingFormData}
+            setFormData={setCourseLandingFormData}
+          />
+        </div>
+
+        {/* AI Text Generator Section with animation */}
+        <div
+          className="bg-gradient-to-r from-blue-500 to-teal-400 rounded-lg p-4 shadow-inner 
+                        transition-all duration-300 hover:shadow-xl hover:scale-105"
+        >
+          <AiTextGenerator />
+        </div>
       </CardContent>
     </Card>
   );
