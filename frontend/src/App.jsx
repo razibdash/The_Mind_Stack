@@ -61,8 +61,9 @@ function App() {
             />
           }
         >
-          <Route path="home" element={<StudentDashboardPage />} />
+          <Route path="/home" element={<StudentDashboardPage />} />
         </Route>
+
         <Route path="*" element={<NotFound />} />
       </Routes>
     );
