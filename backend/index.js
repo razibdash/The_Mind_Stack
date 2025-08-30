@@ -12,6 +12,7 @@ const authRoutes = require("./routes/auth-routes/index.js");
 const aiRoutes = require("./routes/Ai/ai-routes.js");
 const mediaRoutes = require("./routes/instructor-routes/media-routes.js");
 const courseRoutes = require("./routes/instructor-routes/courseRoutes.js");
+const studentCourseRoutes = require("./routes/students-routes/courseRoutes.js");
 //Port
 const PORT = process.env.PORT || 5000;
 //CORS configuration
@@ -43,6 +44,7 @@ app.use("/auth", authRoutes);
 app.use("/api/ai", aiRoutes);
 app.use("/api/media", mediaRoutes);
 app.use("/api/instructor/course", courseRoutes);
+app.use("/api/student/course", studentCourseRoutes);
 
 //app listening
 app.listen(PORT, () => {
