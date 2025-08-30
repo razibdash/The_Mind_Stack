@@ -1,12 +1,13 @@
 import { Ghost, GraduationCap, TvMinimalPlay } from "lucide-react";
 import React, { useContext, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Button } from "../ui/button";
 import { AuthContext } from "@/context/auth-context";
 import { Menu, X } from "lucide-react";
 const StudentViewCommonHeader = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { resetCredentials } = useContext(AuthContext);
+  const navigate = useNavigate();
   const handleSignOut = () => {
     resetCredentials();
     sessionStorage.clear();
@@ -44,6 +45,7 @@ const StudentViewCommonHeader = () => {
         <div className="hidden md:flex items-center space-x-6">
           <Button
             variant="ghost"
+            onClick={() => navigate("/courses")}
             className="px-5 py-2.5 rounded-xl 
               bg-gradient-to-r from-blue-500 to-teal-500 
               hover:from-blue-600 hover:to-teal-600 
@@ -107,6 +109,7 @@ const StudentViewCommonHeader = () => {
         >
           <Button
             variant="ghost"
+            onClick={() => navigate("/courses")}
             className="w-full mt-4 px-5 py-2.5 rounded-xl 
               bg-gradient-to-r from-blue-500 to-teal-500 
               hover:from-blue-600 hover:to-teal-600 
