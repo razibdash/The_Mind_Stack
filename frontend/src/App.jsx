@@ -11,6 +11,7 @@ import { Skeleton } from "./components/ui/skeleton";
 import StudentDashboardPage from "./pages/students/home";
 import NotFound from "./pages/not-found";
 import AddNewCourse from "./pages/instructors/add-new-course";
+import StudentHomePage from "./pages/students/home";
 
 function App() {
   const { auth, loading } = useContext(AuthContext);
@@ -70,8 +71,10 @@ function App() {
               user={auth?.user}
             />
           }
-        />
-        <Route path="/student" element={<StudentViewCommonLayout />} />
+        >
+          <Route path="" element={<StudentHomePage />} />
+          <Route path="home" element={<StudentHomePage />} />
+        </Route>
         <Route path="*" element={<NotFound />} />
       </Routes>
     );

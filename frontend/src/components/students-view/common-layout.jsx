@@ -5,7 +5,9 @@ function StudentViewCommonLayout() {
   const location = useLocation();
   return (
     <div>
-      <StudentViewCommonHeader />
+      {!location.pathname.includes("course-progress") ? (
+        <StudentViewCommonHeader />
+      ) : null}
 
       <Outlet />
     </div>
