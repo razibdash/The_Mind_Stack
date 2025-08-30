@@ -8,13 +8,84 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { motion } from "framer-motion";
 import { ArrowUpDownIcon } from "lucide-react";
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { sortOptions, filterOptions } from "@/config";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
+import { StudentContext } from "@/context/student-context";
+import { fetchStudentsViewCourseListService } from "@/services";
+import { useSearchParams } from "react-router-dom";
+
+function createQueryParams(filterParams) {
+  const queryParams = [];
+
+  for (const [key, value] of Object.entries(filterParams)) {
+    if (Array.isArray(value) && value.length > 0) {
+      const paramValue = value.join(",");
+
+      queryParams.push(`${key}=${encodeURIComponent(paramValue)}`);
+    }
+  }
+
+  return queryParams.join("&");
+}
+
 const StudentViewCourses = () => {
-  const [sort, setSort] = useState("");
+  const [sort, setSort] = useState("price-lowtohigh");
   const [filters, setFilters] = useState({});
+  const { studentViewCoursesList, setStudentViewCoursesList } =
+    useContext(StudentContext);
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const fetchStudentViewCourses = async () => {
+    try {
+      console.log("Fetching student view courses...");
+      const response = await fetchStudentsViewCourseListService();
+      console.log("Fetched student view courses:", response);
+      if (response?.success) {
+        setStudentViewCoursesList(response.data);
+      }
+    } catch (error) {
+      console.error("Error fetching student view courses:", error);
+    }
+    // Call the service to fetch student view courses
+  };
+
+  useEffect(() => {
+    fetchStudentViewCourses();
+  }, []);
+  useEffect(() => {
+    const buildFilteredQueryParams = createQueryParams(filters);
+    setSearchParams(new URLSearchParams(buildFilteredQueryParams));
+  }, [filters]);
+
+  function handleFilterOnChange(getSectionId, getCurrentOption) {
+    let cpyFilters = { ...filters };
+    const indexOfCurrentSeection =
+      Object.keys(cpyFilters).indexOf(getSectionId);
+
+    console.log(indexOfCurrentSeection, getSectionId);
+    if (indexOfCurrentSeection === -1) {
+      cpyFilters = {
+        ...cpyFilters,
+        [getSectionId]: [getCurrentOption.id],
+      };
+
+      console.log(cpyFilters);
+    } else {
+      const indexOfCurrentOption = cpyFilters[getSectionId].indexOf(
+        getCurrentOption.id
+      );
+
+      if (indexOfCurrentOption === -1)
+        cpyFilters[getSectionId].push(getCurrentOption.id);
+      else cpyFilters[getSectionId].splice(indexOfCurrentOption, 1);
+    }
+
+    setFilters(cpyFilters);
+    sessionStorage.setItem("filters", JSON.stringify(cpyFilters));
+  }
+  console.log(filters);
   return (
     <motion.div
       className="min-h-screen relative overflow-hidden"
@@ -65,9 +136,9 @@ const StudentViewCourses = () => {
                         >
                           <Checkbox
                             checked={isChecked}
-                            // onCheckedChange={() =>
-                            //   handleFilterOnChange(keyItem, option)
-                            // }
+                            onCheckedChange={() =>
+                              handleFilterOnChange(keyItem, option)
+                            }
                           />
                         </motion.div>
                         <Label className="font-medium text-gray-300 cursor-pointer">
@@ -121,11 +192,92 @@ const StudentViewCourses = () => {
                   </DropdownMenuRadioGroup>
                 </DropdownMenuContent>
               </DropdownMenu>
+              <span className="text-sm text-stone-200 font-bold">
+                10 Results
+              </span>
             </div>
 
             {/* Course List Placeholder */}
-            <div className="text-gray-300 text-center py-20 border border-dashed border-gray-600 rounded-xl">
-              Courses will appear here 🚀
+            <div className="space-y-4">
+              {studentViewCoursesList && studentViewCoursesList.length > 0 ? (
+                studentViewCoursesList.map((course, idx) => (
+                  <motion.div
+                    key={course._id}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: idx * 0.06, duration: 0.45 }}
+                    whileHover={{ y: -4, scale: 1.01 }}
+                    className="flex flex-col sm:flex-row items-center sm:items-start gap-4 p-4 rounded-xl 
+                            border border-gray-700/60 bg-gray-800/60 backdrop-blur-md shadow-sm 
+                            hover:shadow-lg transition-all duration-300 last:border-b-0"
+                  >
+                    {/* Image */}
+                    <div className="flex-shrink-0 w-full sm:w-auto">
+                      <img
+                        src={course.image}
+                        alt={course.title}
+                        className="w-full h-40 sm:w-60 sm:h-40 rounded-lg object-cover shadow-md"
+                      />
+                    </div>
+
+                    {/* Middle: Title & Meta */}
+                    <div className="flex-1 min-w-0 w-full">
+                      <h3 className="text-base sm:text-lg font-semibold text-white truncate">
+                        {course.title}
+                      </h3>
+                      <p className="text-sm text-gray-300 mt-1 truncate">
+                        {course.instructorName || "Unknown Instructor"}
+                      </p>
+
+                      <div className="flex flex-wrap items-center gap-2 mt-3">
+                        <span className="text-xs px-2 py-1 rounded-md bg-gray-800/70 border border-gray-700 text-gray-300">
+                          {course?.curriculum?.length}{" "}
+                          {course?.curriculum?.length <= 1
+                            ? "Lecture"
+                            : "Lectures"}
+                        </span>
+
+                        <span className="text-xs px-2 py-1 rounded-md bg-indigo-600/10 text-indigo-300 border border-indigo-500/20">
+                          {course?.level?.toUpperCase()} Level
+                        </span>
+
+                        {course.category && (
+                          <span className="text-xs px-2 py-1 rounded-md bg-emerald-600/10 text-emerald-300 border border-emerald-500/20">
+                            {course.category}
+                          </span>
+                        )}
+                      </div>
+                    </div>
+
+                    {/* Right: Price + CTA */}
+                    <div className="flex sm:flex-col items-center sm:items-end justify-between gap-3 w-full sm:w-auto mt-3 sm:mt-0">
+                      {/* Price */}
+                      <div className="text-left sm:text-right">
+                        <p className="text-indigo-300 font-bold text-lg">
+                          ${course.pricing}
+                        </p>
+                        <p className="text-xs text-gray-400">
+                          One-time payment
+                        </p>
+                      </div>
+
+                      {/* CTA */}
+                      <motion.button
+                        whileTap={{ scale: 0.96 }}
+                        className="px-4 py-2 w-full sm:w-auto rounded-lg bg-gradient-to-r from-blue-500 to-teal-400 
+                                text-white font-semibold shadow hover:scale-[1.02] transition"
+                        onClick={() => handleCourseNavigate?.(course._id)}
+                      >
+                        Enroll
+                      </motion.button>
+                    </div>
+                  </motion.div>
+                ))
+              ) : (
+                <div className="text-center py-10 text-gray-400 border border-dashed border-gray-700 rounded-xl">
+                  No courses available
+                </div>
+              )}
             </div>
           </motion.main>
         </div>
