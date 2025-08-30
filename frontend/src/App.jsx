@@ -62,18 +62,16 @@ function App() {
         />
 
         <Route
-          path="/"
+          path="/home"
           element={
             <RouteGuard
+              element={<StudentViewCommonLayout />}
               authenticated={auth?.authenticate}
               user={auth?.user}
-              element={<StudentViewCommonLayout />}
             />
           }
-        >
-          <Route path="/home" element={<StudentDashboardPage />} />
-        </Route>
-
+        />
+        <Route path="/student" element={<StudentViewCommonLayout />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     );
