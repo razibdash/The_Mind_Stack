@@ -37,23 +37,25 @@ const StudentViewCourses = () => {
     useContext(StudentContext);
   const [searchParams, setSearchParams] = useSearchParams();
 
-  const fetchStudentViewCourses = async () => {
-    try {
-      console.log("Fetching student view courses...");
-      const response = await fetchStudentsViewCourseListService();
-      console.log("Fetched student view courses:", response);
-      if (response?.success) {
-        setStudentViewCoursesList(response.data);
-      }
-    } catch (error) {
-      console.error("Error fetching student view courses:", error);
+  async function fetchStudentViewCourses(filters, sort) {
+    const query = new URLSearchParams({
+      ...filters,
+      sortBy: sort,
+    });
+    const response = await fetchStudentsViewCourseListService(query);
+    if (response?.success) {
+      setStudentViewCoursesList(response?.data);
+    } else {
+      console.error("Failed to fetch student view courses:", response?.message);
     }
-    // Call the service to fetch student view courses
-  };
+  }
 
   useEffect(() => {
-    fetchStudentViewCourses();
-  }, []);
+    if (filters !== null && sort !== null) {
+      fetchStudentViewCourses(filters, sort);
+    }
+  }, [filters, sort]);
+
   useEffect(() => {
     const buildFilteredQueryParams = createQueryParams(filters);
     setSearchParams(new URLSearchParams(buildFilteredQueryParams));
@@ -70,8 +72,6 @@ const StudentViewCourses = () => {
         ...cpyFilters,
         [getSectionId]: [getCurrentOption.id],
       };
-
-      console.log(cpyFilters);
     } else {
       const indexOfCurrentOption = cpyFilters[getSectionId].indexOf(
         getCurrentOption.id
@@ -85,7 +85,7 @@ const StudentViewCourses = () => {
     setFilters(cpyFilters);
     sessionStorage.setItem("filters", JSON.stringify(cpyFilters));
   }
-  console.log(filters);
+
   return (
     <motion.div
       className="min-h-screen relative overflow-hidden"
@@ -193,7 +193,8 @@ const StudentViewCourses = () => {
                 </DropdownMenuContent>
               </DropdownMenu>
               <span className="text-sm text-stone-200 font-bold">
-                10 Results
+                {studentViewCoursesList?.length || 0}{" "}
+                {studentViewCoursesList?.length <= 1 ? "Course" : "Courses"}
               </span>
             </div>
 
