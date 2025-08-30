@@ -74,7 +74,7 @@ const AddNewCourse = () => {
       ...courseLandingFormData,
       students: [],
       curriculum: courseCurriculumFormData,
-      isPublised: true,
+      isPublised: false,
     };
 
     const response =
@@ -135,7 +135,7 @@ const AddNewCourse = () => {
         <Button
           disabled={!validateFormData()}
           onClick={handleSubmit}
-          className="px-6 py-3 rounded-lg bg-gradient-to-r from-blue-500 to-teal-400 
+          className="px-6 py-3 rounded-lg bg-gradient-to-r cursor-pointer from-blue-500 to-teal-400 
                     text-white font-bold tracking-wide shadow-lg hover:scale-105 
                     hover:shadow-xl transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
         >
