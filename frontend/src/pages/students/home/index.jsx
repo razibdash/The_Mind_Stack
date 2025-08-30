@@ -1,7 +1,9 @@
 import React from "react";
+import { courseCategories } from "@/config";
 import { Link } from "react-router-dom";
 import { Home, BookOpen, Settings, LogOut, User } from "lucide-react";
 import { motion } from "framer-motion";
+import { Button } from "@/components/ui/button";
 const StudentHomePage = () => {
   return (
     <div className="min-h-screen bg-gray-100 ">
@@ -49,8 +51,55 @@ const StudentHomePage = () => {
           />
         </motion.div>
       </section>
-      <section className="py-8 px-4 lg:px-8 bg-gray-100">
-        <h2 className="text-2xl font-bold mb-6">Course Categories</h2>
+      <section className="py-12 px-6 lg:px-16 bg-gradient-to-b from-gray-900 via-gray-800 to-black text-white">
+        {/* Heading */}
+        <motion.h2
+          className="text-3xl lg:text-4xl font-extrabold mb-8 text-center lg:text-left"
+          initial={{ opacity: 0, x: -50 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.7, ease: "easeOut" }}
+        >
+          Explore{" "}
+          <span className="bg-gradient-to-r from-blue-400 to-teal-400 bg-clip-text text-transparent">
+            Course Categories
+          </span>
+        </motion.h2>
+
+        {/* Categories Grid */}
+        <motion.div
+          className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6"
+          initial="hidden"
+          animate="show"
+          variants={{
+            hidden: {},
+            show: {
+              transition: {
+                staggerChildren: 0.12,
+              },
+            },
+          }}
+        >
+          {courseCategories.map((categoryItem) => (
+            <motion.div
+              key={categoryItem.id}
+              variants={{
+                hidden: { opacity: 0, y: 30 },
+                show: { opacity: 1, y: 0 },
+              }}
+              transition={{ duration: 0.6, ease: "easeOut" }}
+            >
+              <Button
+                className="w-full justify-center px-6 py-4 rounded-xl bg-gradient-to-r from-gray-800 to-gray-700 
+                  text-gray-200 font-semibold border border-gray-600 shadow-md
+                  hover:from-blue-500 hover:to-teal-400 hover:text-white hover:shadow-xl 
+                  transition-all duration-300"
+                variant="outline"
+              >
+                {categoryItem.label}
+              </Button>
+            </motion.div>
+          ))}
+        </motion.div>
       </section>
     </div>
   );
