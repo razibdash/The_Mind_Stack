@@ -107,7 +107,7 @@ const StudentViewCommonHeader = () => {
         >
           <Button
             variant="ghost"
-            className="w-full px-5 py-2.5 rounded-xl 
+            className="w-full mt-4 px-5 py-2.5 rounded-xl 
               bg-gradient-to-r from-blue-500 to-teal-500 
               hover:from-blue-600 hover:to-teal-600 
               text-white font-semibold shadow-lg hover:shadow-xl 

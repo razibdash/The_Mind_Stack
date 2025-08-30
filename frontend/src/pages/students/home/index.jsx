@@ -67,9 +67,7 @@ const StudentHomePage = () => {
           <img
             src="/banner-img.png"
             alt="Learning Banner"
-            width={600}
-            height={400}
-            className="w-full max-w-lg h-auto rounded-2xl shadow-2xl border border-gray-700/40"
+            className="w-full  h-auto rounded-2xl shadow-2xl border border-gray-700/40"
           />
         </motion.div>
       </section>
@@ -89,7 +87,7 @@ const StudentHomePage = () => {
 
         {/* Categories Grid */}
         <motion.div
-          className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6"
+          className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"
           initial="hidden"
           animate="show"
           variants={{
