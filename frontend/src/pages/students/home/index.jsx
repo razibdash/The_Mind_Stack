@@ -1,10 +1,32 @@
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import { courseCategories } from "@/config";
 import { Link } from "react-router-dom";
 import { Home, BookOpen, Settings, LogOut, User } from "lucide-react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
+import { StudentContext } from "@/context/student-context";
+import { fetchStudentsViewCourseListService } from "@/services";
 const StudentHomePage = () => {
+  const { studentViewCoursesList, setStudentViewCoursesList } =
+    useContext(StudentContext);
+
+  const fetchStudentViewCourses = async () => {
+    try {
+      console.log("Fetching student view courses...");
+      const response = await fetchStudentsViewCourseListService();
+      console.log("Fetched student view courses:", response);
+      if (response?.success) {
+        setStudentViewCoursesList(response.data);
+      }
+    } catch (error) {
+      console.error("Error fetching student view courses:", error);
+    }
+    // Call the service to fetch student view courses
+  };
+
+  useEffect(() => {
+    fetchStudentViewCourses();
+  }, []);
   return (
     <div className="min-h-screen bg-gray-100 ">
       <section className="flex flex-col-reverse lg:flex-row items-center justify-between py-12 px-6 lg:px-16 bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900 text-white">
@@ -100,6 +122,84 @@ const StudentHomePage = () => {
             </motion.div>
           ))}
         </motion.div>
+      </section>
+      <section className="relative py-16 px-6 lg:px-16 text-white overflow-hidden">
+        {/* Animated Background */}
+        <div className="absolute inset-0 animated-gradient z-0"></div>
+
+        <div className="relative z-10">
+          {/* Section Title */}
+          <motion.h2
+            className="text-3xl lg:text-4xl font-extrabold mb-10 "
+            initial={{ opacity: 0, y: -40 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, ease: "easeOut" }}
+          >
+            Featured
+            <span className="bg-gradient-to-r from-blue-400 to-teal-400 bg-clip-text text-transparent">
+              Courses
+            </span>
+          </motion.h2>
+
+          {/* Courses Grid */}
+          <motion.div
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8"
+            initial="hidden"
+            animate="show"
+            variants={{
+              hidden: {},
+              show: {
+                transition: { staggerChildren: 0.15 },
+              },
+            }}
+          >
+            {studentViewCoursesList && studentViewCoursesList.length > 0 ? (
+              studentViewCoursesList.map((courseItem) => (
+                <motion.div
+                  key={courseItem?._id}
+                  className="group bg-gray-900/80 border border-gray-700 rounded-2xl overflow-hidden shadow-lg 
+                hover:shadow-2xl hover:scale-[1.03] transition-transform duration-300 cursor-pointer backdrop-blur-md"
+                  variants={{
+                    hidden: { opacity: 0, y: 40 },
+                    show: { opacity: 1, y: 0 },
+                  }}
+                  transition={{ duration: 0.6, ease: "easeOut" }}
+                >
+                  {/* Course Image */}
+                  <div className="relative">
+                    <img
+                      src={courseItem?.image}
+                      alt={courseItem?.title}
+                      className="w-full h-44 object-cover"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                  </div>
+
+                  {/* Course Content */}
+                  <div className="p-5">
+                    <h3 className="font-bold text-lg mb-2 group-hover:text-blue-400 transition-colors">
+                      {courseItem?.title}
+                    </h3>
+                    <p className="text-sm text-gray-400 mb-3">
+                      By {courseItem?.instructorName}
+                    </p>
+                    <p className="font-semibold text-xl bg-gradient-to-r from-blue-400 to-teal-400 bg-clip-text text-transparent">
+                      ${courseItem?.pricing}
+                    </p>
+                  </div>
+                </motion.div>
+              ))
+            ) : (
+              <motion.h1
+                className="text-center text-gray-300"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+              >
+                No Courses Found
+              </motion.h1>
+            )}
+          </motion.div>
+        </div>
       </section>
     </div>
   );
