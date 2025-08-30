@@ -14,7 +14,7 @@ import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { StudentContext } from "@/context/student-context";
 import { fetchStudentsViewCourseListService } from "@/services";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 function createQueryParams(filterParams) {
   const queryParams = [];
@@ -33,10 +33,14 @@ function createQueryParams(filterParams) {
 const StudentViewCourses = () => {
   const [sort, setSort] = useState("price-lowtohigh");
   const [filters, setFilters] = useState({});
-  const { studentViewCoursesList, setStudentViewCoursesList } =
-    useContext(StudentContext);
+  const {
+    studentViewCoursesList,
+    setStudentViewCoursesList,
+    loadingState,
+    setLoadingState,
+  } = useContext(StudentContext);
   const [searchParams, setSearchParams] = useSearchParams();
-
+  const navigate = useNavigate();
   async function fetchStudentViewCourses(filters, sort) {
     const query = new URLSearchParams({
       ...filters,
@@ -45,6 +49,7 @@ const StudentViewCourses = () => {
     const response = await fetchStudentsViewCourseListService(query);
     if (response?.success) {
       setStudentViewCoursesList(response?.data);
+      setLoadingState(false);
     } else {
       console.error("Failed to fetch student view courses:", response?.message);
     }
@@ -66,7 +71,6 @@ const StudentViewCourses = () => {
     const indexOfCurrentSeection =
       Object.keys(cpyFilters).indexOf(getSectionId);
 
-    console.log(indexOfCurrentSeection, getSectionId);
     if (indexOfCurrentSeection === -1) {
       cpyFilters = {
         ...cpyFilters,
@@ -85,10 +89,20 @@ const StudentViewCourses = () => {
     setFilters(cpyFilters);
     sessionStorage.setItem("filters", JSON.stringify(cpyFilters));
   }
+  useEffect(() => {
+    setSort("price-lowtohigh");
+    setFilters(JSON.parse(sessionStorage.getItem("filters")) || {});
+  }, []);
+
+  useEffect(() => {
+    return () => {
+      sessionStorage.removeItem("filters");
+    };
+  }, []);
 
   return (
     <motion.div
-      className="min-h-screen relative overflow-hidden"
+      className="min-h-screen relative  overflow-hidden"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 1 }}
@@ -96,7 +110,7 @@ const StudentViewCourses = () => {
       {/* Animated Background */}
       <div className="absolute inset-0 bg-gradient-to-br from-gray-900 via-black to-gray-800 animate-gradient-x opacity-95"></div>
 
-      <div className="container mx-auto relative z-10 p-6">
+      <div className="container max-w-7xl  mx-auto relative z-10 p-6">
         <h1 className="text-4xl font-extrabold mb-8 text-white tracking-wide">
           All Courses
         </h1>
@@ -208,7 +222,8 @@ const StudentViewCourses = () => {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: idx * 0.06, duration: 0.45 }}
                     whileHover={{ y: -4, scale: 1.01 }}
-                    className="flex flex-col sm:flex-row items-center sm:items-start gap-4 p-4 rounded-xl 
+                    onClick={() => navigate(`/courses/details/${course._id}`)}
+                    className="flex flex-col sm:flex-row cursor-pointer items-center sm:items-start gap-4 p-4 rounded-xl 
                             border border-gray-700/60 bg-gray-800/60 backdrop-blur-md shadow-sm 
                             hover:shadow-lg transition-all duration-300 last:border-b-0"
                   >
@@ -263,14 +278,14 @@ const StudentViewCourses = () => {
                       </div>
 
                       {/* CTA */}
-                      <motion.button
+                      {/* <motion.button
                         whileTap={{ scale: 0.96 }}
                         className="px-4 py-2 w-full sm:w-auto rounded-lg bg-gradient-to-r from-blue-500 to-teal-400 
                                 text-white font-semibold shadow hover:scale-[1.02] transition"
                         onClick={() => handleCourseNavigate?.(course._id)}
                       >
                         Enroll
-                      </motion.button>
+                      </motion.button> */}
                     </div>
                   </motion.div>
                 ))

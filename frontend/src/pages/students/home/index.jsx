@@ -1,12 +1,13 @@
 import React, { useContext, useEffect } from "react";
 import { courseCategories } from "@/config";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Home, BookOpen, Settings, LogOut, User } from "lucide-react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { StudentContext } from "@/context/student-context";
 import { fetchStudentsViewCourseListService } from "@/services";
 const StudentHomePage = () => {
+  const navigate = useNavigate();
   const { studentViewCoursesList, setStudentViewCoursesList } =
     useContext(StudentContext);
 
@@ -28,8 +29,8 @@ const StudentHomePage = () => {
     fetchStudentViewCourses();
   }, []);
   return (
-    <div className="min-h-screen bg-gray-100 ">
-      <section className="flex flex-col-reverse lg:flex-row items-center justify-between py-12 px-6 lg:px-16 bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900 text-white">
+    <div className="min-h-screen bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900 text-white ">
+      <section className="flex max-w-7xl  mx-auto flex-col-reverse lg:flex-row items-center justify-between py-12  px-6  ">
         {/* Left Content */}
         <motion.div
           className="lg:w-1/2 lg:pr-12 text-center lg:text-left"
@@ -50,10 +51,11 @@ const StudentHomePage = () => {
           <motion.button
             whileHover={{ scale: 1.08 }}
             whileTap={{ scale: 0.95 }}
+            onClick={() => navigate("/courses")}
             className="px-6 py-3 rounded-xl bg-gradient-to-r from-blue-500 to-teal-400 
               text-white font-semibold shadow-lg hover:shadow-xl transition-all"
           >
-            Get Started
+            Now Explore Courses
           </motion.button>
         </motion.div>
 
@@ -71,7 +73,7 @@ const StudentHomePage = () => {
           />
         </motion.div>
       </section>
-      <section className="py-12 px-6 lg:px-16 bg-gradient-to-b from-gray-900 via-gray-800 to-black text-white">
+      <section className="py-6 max-w-7xl  mx-auto  px-6  bg-gradient-to-b  text-white">
         {/* Heading */}
         <motion.h2
           className="text-3xl lg:text-4xl font-extrabold mb-8 text-center lg:text-left"
@@ -121,11 +123,11 @@ const StudentHomePage = () => {
           ))}
         </motion.div>
       </section>
-      <section className="relative py-16 px-6 lg:px-16 text-white overflow-hidden">
+      <section className="relative py-6 px-6   text-white overflow-hidden">
         {/* Animated Background */}
         <div className="absolute inset-0 animated-gradient z-0"></div>
 
-        <div className="relative z-10">
+        <div className="relative z-10 max-w-7xl px-6 py-6 mx-auto">
           {/* Section Title */}
           <motion.h2
             className="text-3xl lg:text-4xl font-extrabold mb-10 "
@@ -133,7 +135,7 @@ const StudentHomePage = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, ease: "easeOut" }}
           >
-            Featured
+            Featured{" "}
             <span className="bg-gradient-to-r from-blue-400 to-teal-400 bg-clip-text text-transparent">
               Courses
             </span>

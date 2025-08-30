@@ -14,14 +14,14 @@ const StudentViewCommonHeader = () => {
   };
   return (
     <header
-      className="sticky top-0 z-50 w-full bg-gradient-to-r 
+      className="sticky  top-0 z-50 w-full bg-gradient-to-r 
       from-gray-900/95 via-gray-800/90 to-gray-900/95 text-white 
       shadow-xl border-b border-gray-700/60 backdrop-blur-lg"
     >
       {/* Main Container */}
-      <div className="flex items-center justify-between px-6 py-4">
+      <div className="flex items-center max-w-7xl mx-auto  justify-between px-6 py-4">
         {/* Left Section */}
-        <div className="flex items-center space-x-6">
+        <div className="flex items-center  space-x-6">
           {/* Logo + Brand */}
           <Link
             to="/home"
