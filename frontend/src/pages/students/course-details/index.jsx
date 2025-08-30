@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
-import ReactPlayer from "react-player";
+
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import VideoPlayer from "@/components/video-player";
 import { AuthContext } from "@/context/auth-context";
@@ -238,12 +238,10 @@ const StudentCourseDetailsPage = () => {
             <Card className="sticky top-6 bg-gray-800/70 border border-gray-700 rounded-2xl shadow-lg">
               <CardContent className="p-6">
                 <div className="aspect-video mb-4 rounded-lg overflow-hidden border border-gray-600">
-                  <ReactPlayer
-                    url="https://res.cloudinary.com/razibdash/video/upload/v1756402142/djk0usa9joebwlua54oe.mp4"
-                    controls
+                  <VideoPlayer
                     width="100%"
-                    height="100%"
-                    style={{ borderRadius: "12px", objectFit: "cover" }}
+                    height="220px"
+                    url={studentViewCourseDetails?.previewVideoUrl}
                   />
                 </div>
                 <div className="mb-6">

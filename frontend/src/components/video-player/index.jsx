@@ -13,11 +13,11 @@ import {
   MediaFullscreenButton,
 } from "media-chrome/react";
 
-export default function VideoPlayer({ url }) {
+export default function VideoPlayer({ url, width, height }) {
   return (
     <MediaController
       style={{
-        width: "50%",
+        width: width || "10%",
         aspectRatio: "16/9",
       }}
     >
@@ -27,7 +27,7 @@ export default function VideoPlayer({ url }) {
         controls={false}
         style={{
           width: "100%",
-          height: "100%",
+          height: height || "100%",
           "--controls": "none",
         }}
       ></ReactPlayer>
