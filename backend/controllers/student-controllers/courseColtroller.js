@@ -57,7 +57,7 @@ const getAllStudentViewCourses = async (req, res) => {
 const getStudentViewCourseDetails = async (req, res) => {
   try {
     const {id} =req.params;
-    const courseDetails = await Course.findById(id).populate('instructor', 'name email');
+    const courseDetails = await Course.findById(id);
     if (!courseDetails) {
       return res.status(404).json({ message: "Course not found", success: false });
     }

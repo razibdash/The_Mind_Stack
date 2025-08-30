@@ -9,7 +9,9 @@ cloudinary.config({
 const uploadMediaToCloudinary = async (filePath) => {
   try {
     const result = await cloudinary.uploader.upload(filePath,{
-      resource_type: "auto",
+      resource_type: "video", // force video handling
+      type: "upload",         // ensures PUBLIC delivery
+      access_mode: "public",
     });
     return result;
   } catch (error) {
