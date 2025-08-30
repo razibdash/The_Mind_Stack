@@ -33,7 +33,6 @@ const AddNewCourse = () => {
   const navigate = useNavigate();
   const params = useParams();
 
-  console.log(params);
   function isEmpty(value) {
     if (Array.isArray(value)) {
       return value.length === 0;
@@ -125,6 +124,7 @@ const AddNewCourse = () => {
   useEffect(() => {
     if (params?.courseId) setCurrentEditedCourseId(params?.courseId);
   }, [params?.courseId]);
+
   return (
     <div className="container mx-auto p-4">
       {/* Header Section */}

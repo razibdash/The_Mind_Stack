@@ -15,10 +15,16 @@ import {
 import { InstructorContext } from "@/context/instructor-context";
 import { Delete, Edit } from "lucide-react";
 import { useContext } from "react";
+
 import { useNavigate } from "react-router-dom";
 
 const InstructorCourses = ({ listOfCourses }) => {
   const navigate = useNavigate();
+  const {
+    setCurrentEditedCourseId,
+    setCourseLandingFormData,
+    setCourseCurriculumFormData,
+  } = useContext(InstructorContext);
 
   return (
     <Card className="shadow-xl border border-gray-200 rounded-2xl overflow-hidden">
@@ -26,7 +32,12 @@ const InstructorCourses = ({ listOfCourses }) => {
       <CardHeader className="flex justify-between items-center bg-gradient-to-r from-blue-500 to-teal-400 text-white p-6">
         <CardTitle className="text-3xl font-extrabold">All Courses</CardTitle>
         <Button
-          onClick={() => navigate("/instructor/create-new-course")}
+          onClick={() => {
+            setCurrentEditedCourseId(null);
+            setCourseLandingFormData(courseLandingInitialFormData);
+            setCourseCurriculumFormData(courseCurriculumInitialFormData);
+            navigate("/instructor/create-new-course");
+          }}
           className="px-6 py-3 bg-gradient-to-r from-blue-500 to-teal-400   
                      text-white font-semibold rounded-lg shadow-lg transform transition-all
                      hover:scale-105 hover:shadow-xl active:scale-95"
