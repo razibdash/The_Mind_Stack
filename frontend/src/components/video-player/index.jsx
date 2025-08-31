@@ -1,4 +1,3 @@
-import ReactPlayer from "react-player";
 import {
   MediaController,
   MediaControlBar,
@@ -17,20 +16,27 @@ export default function VideoPlayer({ url, width, height }) {
   return (
     <MediaController
       style={{
-        width: width || "10%",
+        width: width || "100%",
         aspectRatio: "16/9",
+        backgroundColor: "black",
+        borderRadius: "12px",
+        overflow: "hidden",
       }}
     >
-      <ReactPlayer
+      {/* ✅ Native <video> for Cloudinary playback */}
+      <video
         slot="media"
         src={url}
-        controls={false}
+        playsInline
+        preload="metadata"
         style={{
           width: "100%",
           height: height || "100%",
-          "--controls": "none",
+          objectFit: "cover",
         }}
-      ></ReactPlayer>
+      />
+
+      {/* ✅ Custom Controls */}
       <MediaControlBar>
         <MediaPlayButton />
         <MediaSeekBackwardButton seekOffset={10} />

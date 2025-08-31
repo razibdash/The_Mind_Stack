@@ -13,9 +13,10 @@ import {
   Lock,
   PlayCircle,
   Users,
+  Video,
 } from "lucide-react";
 import React, { useContext, useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import {
   Dialog,
   DialogClose,
@@ -43,6 +44,7 @@ const StudentCourseDetailsPage = () => {
   const [approvalUrl, setApprovalUrl] = useState("");
   const navigate = useNavigate();
   const { id } = useParams();
+  const location = useLocation();
   const FetchCourseDataById = async () => {
     try {
       const response = await fetchStudentsViewCourseDetailsService(
@@ -70,6 +72,10 @@ const StudentCourseDetailsPage = () => {
       setCurrentCourseDetailsId(id);
     }
   }, [id]);
+  // useEffect(() => {
+  //   if (!location.pathname.includes("course/details"))
+  //     setStudentViewCourseDetails(null), setCurrentCourseDetailsId(null);
+  // }, [location.pathname]);
   function handleSetFreePreview(getCurrentVideoInfo) {
     console.log(getCurrentVideoInfo);
     setDisplayCurrentVideoFreePreview(getCurrentVideoInfo?.videoUrl);
@@ -83,7 +89,7 @@ const StudentCourseDetailsPage = () => {
           (item) => item.freePreview
         )
       : -1;
-
+  console.log("Ivideo:", getIndexOfFreePreviewUrl);
   return (
     <div className="mx-auto p-4 bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900">
       <motion.div
@@ -276,14 +282,23 @@ const StudentCourseDetailsPage = () => {
             transition={{ duration: 0.6 }}
           >
             <Card className="sticky top-6 bg-gray-800/70 border border-gray-700 rounded-2xl shadow-lg">
-              <CardContent className="p-6">
-                <div className="aspect-video mb-4 rounded-lg overflow-hidden border border-gray-600">
+              <CardContent className="p-6 ">
+                <div className="mb-6 aspect-video rounded-lg overflow-hidden border border-gray-700">
                   <VideoPlayer
+                    controls
                     width="100%"
-                    height="220px"
-                    url={studentViewCourseDetails?.previewVideoUrl}
+                    height="100%"
+                    className="w-full h-full object-cover rounded-lg mb-4 "
+                    url={
+                      getIndexOfFreePreviewUrl !== -1
+                        ? studentViewCourseDetails?.curriculum[
+                            getIndexOfFreePreviewUrl
+                          ].videoUrl
+                        : ""
+                    }
                   />
                 </div>
+
                 <div className="mb-6">
                   <span className="text-4xl font-bold text-green-400">
                     ${studentViewCourseDetails?.pricing}
