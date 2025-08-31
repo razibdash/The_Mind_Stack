@@ -24,6 +24,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import Markdown from "react-markdown";
 
 const StudentCourseDetailsPage = () => {
   const {
@@ -31,6 +32,8 @@ const StudentCourseDetailsPage = () => {
     setStudentViewCourseDetails,
     currentCourseDetailsId,
     setCurrentCourseDetailsId,
+    loadingState,
+    setLoadingState,
   } = useContext(StudentContext);
   const { auth } = useContext(AuthContext);
 
@@ -88,7 +91,7 @@ const StudentCourseDetailsPage = () => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, ease: "easeOut" }}
         className="relative bg-gradient-to-br max-w-7xl  mx-auto
-                    text-white p-8  overflow-hidden"
+                    text-white md:p-8 p-2  overflow-hidden"
       >
         {/* Subtle background animation */}
         <motion.div
@@ -149,14 +152,16 @@ const StudentCourseDetailsPage = () => {
           </motion.div>
         </div>
       </motion.div>
-      <div className="flex flex-col md:flex-row max-w-7xl  mx-auto text-stone-200 gap-8 mt-10">
+      <div className="flex flex-col md:flex-row max-w-7xl mx-auto text-stone-200 gap-8 mt-10">
         {/* Main Section */}
-        <main className="flex-grow">
+        <main className="flex-grow md:p-7 md:w-[calc(100%-450px)]">
           {/* What you'll learn */}
           <motion.div whileHover={{ scale: 1.01 }} className="mb-8">
             <Card className="bg-gray-800/50 backdrop-blur-md border border-gray-700 hover:border-gray-600 rounded-2xl">
               <CardHeader>
-                <CardTitle className="text-xl">📘 What you'll learn</CardTitle>
+                <CardTitle className="text-xl text-stone-100">
+                  📘 What you'll learn
+                </CardTitle>
               </CardHeader>
               <CardContent>
                 <ul className="grid grid-cols-1 md:grid-cols-2 gap-3">
@@ -171,7 +176,7 @@ const StudentCourseDetailsPage = () => {
                         className="flex items-start bg-gray-700/40 px-3 py-2 rounded-lg"
                       >
                         <CheckCircle className="mr-2 h-5 w-5 text-green-400 flex-shrink-0" />
-                        <span>{objective}</span>
+                        <span className="text-stone-400">{objective}</span>
                       </motion.li>
                     ))}
                 </ul>
@@ -183,10 +188,41 @@ const StudentCourseDetailsPage = () => {
           <motion.div whileHover={{ scale: 1.01 }} className="mb-8">
             <Card className="bg-gray-800/50 border border-gray-700 rounded-2xl">
               <CardHeader>
-                <CardTitle>📝 Course Description</CardTitle>
+                <CardTitle className="text-stone-200">
+                  📝 Course Description
+                </CardTitle>
               </CardHeader>
-              <CardContent className="text-gray-300 leading-relaxed">
-                {studentViewCourseDetails?.description}
+              <CardContent
+                className="text-gray-300 leading-relaxed prose prose-invert max-w-none 
+                              break-words overflow-hidden"
+              >
+                <Markdown
+                  components={{
+                    a: ({ node, ...props }) => (
+                      <a {...props} className=" hover:underline break-words" />
+                    ),
+                    img: ({ node, ...props }) => (
+                      <img
+                        {...props}
+                        className="max-w-full h-auto rounded-lg shadow-md my-2"
+                      />
+                    ),
+                    pre: ({ node, ...props }) => (
+                      <pre
+                        {...props}
+                        className="overflow-x-auto  text-sm p-3 rounded-lg"
+                      />
+                    ),
+                    code: ({ node, ...props }) => (
+                      <code
+                        {...props}
+                        className=" px-1 py-0.5 rounded text-sm break-words"
+                      />
+                    ),
+                  }}
+                >
+                  {studentViewCourseDetails?.description}
+                </Markdown>
               </CardContent>
             </Card>
           </motion.div>
@@ -195,7 +231,9 @@ const StudentCourseDetailsPage = () => {
           <motion.div whileHover={{ scale: 1.01 }}>
             <Card className="bg-gray-800/50 border border-gray-700 rounded-2xl">
               <CardHeader>
-                <CardTitle>📂 Course Curriculum</CardTitle>
+                <CardTitle className="text-stone-200">
+                  📂 Course Curriculum
+                </CardTitle>
               </CardHeader>
               <CardContent>
                 {studentViewCourseDetails?.curriculum?.map(
@@ -219,7 +257,9 @@ const StudentCourseDetailsPage = () => {
                       ) : (
                         <Lock className="mr-2 h-5 w-5 text-red-400" />
                       )}
-                      <span>{curriculumItem?.title}</span>
+                      <span className="text-stone-400">
+                        {curriculumItem?.title}
+                      </span>
                     </motion.li>
                   )
                 )}
@@ -229,7 +269,7 @@ const StudentCourseDetailsPage = () => {
         </main>
 
         {/* Sidebar */}
-        <aside className="w-full md:w-[450px]">
+        <aside className="w-full md:p-7  md:w-[450px]">
           <motion.div
             initial={{ opacity: 0, x: 40 }}
             animate={{ opacity: 1, x: 0 }}

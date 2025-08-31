@@ -109,7 +109,10 @@ const StudentViewCommonHeader = () => {
         >
           <Button
             variant="ghost"
-            onClick={() => navigate("/courses")}
+            onClick={() => {
+              navigate("/courses");
+              setIsMenuOpen(false);
+            }}
             className="w-full mt-4 px-5 py-2.5 rounded-xl 
               bg-gradient-to-r from-blue-500 to-teal-500 
               hover:from-blue-600 hover:to-teal-600 
@@ -119,7 +122,7 @@ const StudentViewCommonHeader = () => {
             Explore Courses
           </Button>
 
-          <div className="flex items-center gap-2 cursor-pointer group relative">
+          <div className="flex items-center justify-center gap-2 cursor-pointer group relative">
             <span
               className="font-medium text-gray-300 group-hover:text-blue-400 
               transition-colors duration-300"
