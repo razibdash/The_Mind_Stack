@@ -9,7 +9,7 @@ const OrderSchema = new mongoose.Schema({
   paymentStatus: String,
   orderDate: Date,
   paymentId: String,
-  payerId: String,
+  stripeId: String,
   instructorId: String,
   instructorName: String,
   courseImage: String,

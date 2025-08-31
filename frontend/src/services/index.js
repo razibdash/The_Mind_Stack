@@ -96,3 +96,26 @@ export async function fetchStudentsViewCourseDetailsService(id) {
 
   return data;
 }
+
+export async function checkCoursePurchaseInfoService(courseId, studentId) {
+  const { data } = await axiosInstance.get(
+    `/student/course/purchase-info/${courseId}/${studentId}`
+  );
+  return data;
+}
+export async function createPaymentService(formData) {
+  const { data } = await axiosInstance.post(`api/student/order/create`, formData);
+
+  // Backend should return something like:
+  // { success: true, order, sessionId, sessionUrl }
+  return data;
+}
+
+export async function captureAndFinalizePaymentService(sessionId, orderId) {
+  const { data } = await axiosInstance.post(`api/student/order/capture`, {
+    sessionId,
+    orderId,
+  });
+
+  return data;
+}

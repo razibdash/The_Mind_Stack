@@ -5,7 +5,11 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import VideoPlayer from "@/components/video-player";
 import { AuthContext } from "@/context/auth-context";
 import { StudentContext } from "@/context/student-context";
-import { fetchStudentsViewCourseDetailsService } from "@/services";
+import {
+  captureAndFinalizePaymentService,
+  createPaymentService,
+  fetchStudentsViewCourseDetailsService,
+} from "@/services";
 import {
   Calendar,
   CheckCircle,
@@ -27,7 +31,9 @@ import {
 } from "@/components/ui/dialog";
 import Markdown from "react-markdown";
 import Loader from "@/components/Loader/Loader";
-
+import { loadStripe } from "@stripe/stripe-js";
+// import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
+const stripePromise = loadStripe(import.meta.env.REACT_APP_STRIPE_PUBLIC_KEY);
 const StudentCourseDetailsPage = () => {
   const {
     studentViewCourseDetails,
@@ -38,6 +44,9 @@ const StudentCourseDetailsPage = () => {
     setLoadingState,
   } = useContext(StudentContext);
   const { auth } = useContext(AuthContext);
+  console.log("Auth Context:", auth);
+  const [sessionId, setSessionId] = useState("");
+  const [sessionUrl, setSessionUrl] = useState("");
 
   const [displayCurrentVideoFreePreview, setDisplayCurrentVideoFreePreview] =
     useState(null);
@@ -87,8 +96,50 @@ const StudentCourseDetailsPage = () => {
     if (displayCurrentVideoFreePreview !== null) setShowFreePreviewDialog(true);
   }, [displayCurrentVideoFreePreview]);
 
-  const handleCreatePayment = () => {
-    // Implement your logic for creating a payment here
+  const handleCreatePayment = async () => {
+    const paymentPayload = {
+      userId: auth?.user?._id,
+      userName: auth?.user?.userName,
+      userEmail: auth?.user?.userEmail,
+      orderStatus: "pending",
+      paymentMethod: "stripe",
+      paymentStatus: "pending",
+      orderDate: new Date(),
+      instructorId: studentViewCourseDetails?.instructorId,
+      instructorName: studentViewCourseDetails?.instructorName,
+      courseImage: studentViewCourseDetails?.image,
+      courseTitle: studentViewCourseDetails?.title,
+      courseId: studentViewCourseDetails?._id,
+      coursePricing: studentViewCourseDetails?.pricing,
+    };
+    console.log(import.meta.env.REACT_APP_STRIPE_PUBLIC_KEY);
+    try {
+      // 1️⃣ Create order + Stripe session on backend
+      const response = await createPaymentService(paymentPayload);
+
+      if (response?.success) {
+        console.log("Payment Data:", response.data);
+        setSessionId(response.data.sessionId);
+        setSessionUrl(response.data.sessionUrl);
+      }
+      const { sessionId, sessionUrl } = response.data;
+
+      // 2️⃣ Redirect user to Stripe Checkout
+      const stripe = await stripePromise;
+      await stripe.redirectToCheckout({ sessionId });
+
+      // 3️⃣ After Stripe redirect back to success_url:
+      const responseAfterPayment = await captureAndFinalizePaymentService(
+        sessionId
+      );
+      console.log("Payment Capture Response:", responseAfterPayment);
+      // Call capture API to finalize payment
+      // You can do this in a separate page e.g., /payment-success?session_id=...
+    } catch (err) {
+      console.error(err);
+      alert("Error processing payment!");
+    }
+    console.log("Payment process completed", paymentPayload);
   };
   const getIndexOfFreePreviewUrl =
     studentViewCourseDetails !== null
@@ -96,15 +147,6 @@ const StudentCourseDetailsPage = () => {
           (item) => item.freePreview
         )
       : -1;
-  console.log("Ivideo:", getIndexOfFreePreviewUrl);
-
-  if (loadingState) {
-    return (
-      <div>
-        <Loader />
-      </div>
-    );
-  }
 
   return (
     <div className="mx-auto p-4 bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900">
