@@ -26,6 +26,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import Markdown from "react-markdown";
+import Loader from "@/components/Loader/Loader";
 
 const StudentCourseDetailsPage = () => {
   const {
@@ -52,6 +53,7 @@ const StudentCourseDetailsPage = () => {
       );
       if (response?.success) {
         setStudentViewCourseDetails(response?.data);
+        setLoadingState(false);
         console.log("Course Details Data:", response?.data);
       }
     } catch (error) {
@@ -76,10 +78,15 @@ const StudentCourseDetailsPage = () => {
   //   if (!location.pathname.includes("course/details"))
   //     setStudentViewCourseDetails(null), setCurrentCourseDetailsId(null);
   // }, [location.pathname]);
+
   function handleSetFreePreview(getCurrentVideoInfo) {
     console.log(getCurrentVideoInfo);
     setDisplayCurrentVideoFreePreview(getCurrentVideoInfo?.videoUrl);
   }
+  useEffect(() => {
+    if (displayCurrentVideoFreePreview !== null) setShowFreePreviewDialog(true);
+  }, [displayCurrentVideoFreePreview]);
+
   const handleCreatePayment = () => {
     // Implement your logic for creating a payment here
   };
@@ -90,6 +97,15 @@ const StudentCourseDetailsPage = () => {
         )
       : -1;
   console.log("Ivideo:", getIndexOfFreePreviewUrl);
+
+  if (loadingState) {
+    return (
+      <div>
+        <Loader />
+      </div>
+    );
+  }
+
   return (
     <div className="mx-auto p-4 bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900">
       <motion.div
@@ -97,7 +113,7 @@ const StudentCourseDetailsPage = () => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, ease: "easeOut" }}
         className="relative bg-gradient-to-br max-w-7xl  mx-auto
-                    text-white md:p-8 p-2  overflow-hidden"
+                        text-white md:p-8 p-2  overflow-hidden"
       >
         {/* Subtle background animation */}
         <motion.div
@@ -200,7 +216,7 @@ const StudentCourseDetailsPage = () => {
               </CardHeader>
               <CardContent
                 className="text-gray-300 leading-relaxed prose prose-invert max-w-none 
-                              break-words overflow-hidden"
+                                  break-words overflow-hidden"
               >
                 <Markdown
                   components={{
@@ -309,7 +325,7 @@ const StudentCourseDetailsPage = () => {
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   className="px-6 py-3 w-full rounded-xl bg-gradient-to-r from-blue-500 to-teal-400 
-                             text-white font-semibold shadow-lg hover:shadow-xl transition"
+                                text-white font-semibold shadow-lg hover:shadow-xl transition"
                   onClick={handleCreatePayment}
                 >
                   🚀 Enroll Now
@@ -346,14 +362,15 @@ const StudentCourseDetailsPage = () => {
                 <p
                   key={filteredItem?.title}
                   onClick={() => handleSetFreePreview(filteredItem)}
-                  className="cursor-pointer text-[16px] font-medium hover:text-blue-400"
+                  className="cursor-pointer flex items-center text-[16px] font-medium hover:text-blue-400"
                 >
+                  <PlayCircle className="mr-2 h-5 w-5 text-blue-400" />{" "}
                   {filteredItem?.title}
                 </p>
               ))}
           </div>
           <DialogFooter className="sm:justify-start mt-4">
-            <DialogClose asChild>
+            {/* <DialogClose asChild>
               <Button
                 type="button"
                 variant="secondary"
@@ -361,7 +378,7 @@ const StudentCourseDetailsPage = () => {
               >
                 Close
               </Button>
-            </DialogClose>
+            </DialogClose> */}
           </DialogFooter>
         </DialogContent>
       </Dialog>

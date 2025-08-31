@@ -6,18 +6,24 @@ import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { StudentContext } from "@/context/student-context";
 import { fetchStudentsViewCourseListService } from "@/services";
+import Loader from "@/components/Loader/Loader";
 const StudentHomePage = () => {
   const navigate = useNavigate();
-  const { studentViewCoursesList, setStudentViewCoursesList } =
-    useContext(StudentContext);
+  const {
+    studentViewCoursesList,
+    setStudentViewCoursesList,
+    loadingState,
+    setLoadingState,
+  } = useContext(StudentContext);
 
   const fetchStudentViewCourses = async () => {
     try {
-      console.log("Fetching student view courses...");
       const response = await fetchStudentsViewCourseListService();
-      console.log("Fetched student view courses:", response);
       if (response?.success) {
         setStudentViewCoursesList(response.data);
+        setTimeout(() => {
+          setLoadingState(false);
+        }, 4000);
       }
     } catch (error) {
       console.error("Error fetching student view courses:", error);
@@ -28,6 +34,7 @@ const StudentHomePage = () => {
   useEffect(() => {
     fetchStudentViewCourses();
   }, []);
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900 text-white ">
       <section className="flex max-w-7xl  mx-auto flex-col-reverse lg:flex-row items-center justify-between py-12  px-6  ">
