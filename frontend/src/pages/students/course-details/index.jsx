@@ -351,8 +351,10 @@ const StudentCourseDetailsPage = () => {
           <div className="aspect-video rounded-lg overflow-hidden border border-gray-700 mb-4">
             <VideoPlayer
               url={displayCurrentVideoFreePreview}
+              controls
               width="100%"
-              height="220px"
+              height="100%"
+              className="w-full h-full object-cover rounded-lg mb-4 "
             />
           </div>
           <div className="flex flex-col gap-2">
