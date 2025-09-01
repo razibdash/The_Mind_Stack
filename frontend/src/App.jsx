@@ -14,6 +14,7 @@ import AddNewCourse from "./pages/instructors/add-new-course";
 import StudentHomePage from "./pages/students/home";
 import StudentViewCourses from "./pages/students/courses";
 import StudentCourseDetailsPage from "./pages/students/course-details";
+import PaymentSuccess from "./pages/payment-success/PaymentSuccess";
 
 function App() {
   const { auth, loading } = useContext(AuthContext);
@@ -81,6 +82,9 @@ function App() {
             path="courses/details/:id"
             element={<StudentCourseDetailsPage />}
           />
+          {/* ✅ Stripe success page */}
+          <Route path="payment-success" element={<PaymentSuccess />} />
+          <Route path="payment-cancel" element={<PaymentSuccess />} />
         </Route>
         <Route path="*" element={<NotFound />} />
       </Routes>

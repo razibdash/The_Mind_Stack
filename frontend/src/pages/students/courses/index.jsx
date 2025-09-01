@@ -100,13 +100,13 @@ const StudentViewCourses = () => {
     };
   }, []);
 
-  if (loadingState) {
-    return (
-      <div>
-        <Loader />
-      </div>
-    );
-  }
+  // if (loadingState) {
+  //   return (
+  //     <div>
+  //       <Loader />
+  //     </div>
+  //   );
+  // }
 
   return (
     <motion.div

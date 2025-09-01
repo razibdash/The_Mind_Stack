@@ -1,6 +1,5 @@
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
-
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import VideoPlayer from "@/components/video-player";
 import { AuthContext } from "@/context/auth-context";
@@ -33,7 +32,7 @@ import Markdown from "react-markdown";
 import Loader from "@/components/Loader/Loader";
 import { loadStripe } from "@stripe/stripe-js";
 // import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
-const stripePromise = loadStripe(import.meta.env.REACT_APP_STRIPE_PUBLIC_KEY);
+const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY);
 const StudentCourseDetailsPage = () => {
   const {
     studentViewCourseDetails,
@@ -47,7 +46,7 @@ const StudentCourseDetailsPage = () => {
   console.log("Auth Context:", auth);
   const [sessionId, setSessionId] = useState("");
   const [sessionUrl, setSessionUrl] = useState("");
-
+  console.log("Stripe Key:", import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY);
   const [displayCurrentVideoFreePreview, setDisplayCurrentVideoFreePreview] =
     useState(null);
   const [showFreePreviewDialog, setShowFreePreviewDialog] = useState(false);
@@ -63,7 +62,6 @@ const StudentCourseDetailsPage = () => {
       if (response?.success) {
         setStudentViewCourseDetails(response?.data);
         setLoadingState(false);
-        console.log("Course Details Data:", response?.data);
       }
     } catch (error) {
       console.error("Error fetching course data:", error);
@@ -89,7 +87,6 @@ const StudentCourseDetailsPage = () => {
   // }, [location.pathname]);
 
   function handleSetFreePreview(getCurrentVideoInfo) {
-    console.log(getCurrentVideoInfo);
     setDisplayCurrentVideoFreePreview(getCurrentVideoInfo?.videoUrl);
   }
   useEffect(() => {
@@ -112,7 +109,7 @@ const StudentCourseDetailsPage = () => {
       courseId: studentViewCourseDetails?._id,
       coursePricing: studentViewCourseDetails?.pricing,
     };
-    console.log(import.meta.env.REACT_APP_STRIPE_PUBLIC_KEY);
+    // console.log(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY);
     try {
       // 1️⃣ Create order + Stripe session on backend
       const response = await createPaymentService(paymentPayload);
@@ -122,19 +119,25 @@ const StudentCourseDetailsPage = () => {
         setSessionId(response.data.sessionId);
         setSessionUrl(response.data.sessionUrl);
       }
-      const { sessionId, sessionUrl } = response.data;
+      const { sessionId, sessionUrl, orderId } = response.data;
 
-      // 2️⃣ Redirect user to Stripe Checkout
+      // 2️⃣ Option A (recommended) — redirect with Stripe.js
       const stripe = await stripePromise;
-      await stripe.redirectToCheckout({ sessionId });
+      const { error } = await stripe.redirectToCheckout({ sessionId });
 
-      // 3️⃣ After Stripe redirect back to success_url:
-      const responseAfterPayment = await captureAndFinalizePaymentService(
-        sessionId
-      );
-      console.log("Payment Capture Response:", responseAfterPayment);
-      // Call capture API to finalize payment
-      // You can do this in a separate page e.g., /payment-success?session_id=...
+      if (error) {
+        console.error("Stripe redirect error:", error);
+        alert("Error redirecting to Stripe Checkout.");
+      }
+
+      // // 3️⃣ After Stripe redirect back to success_url:
+      // const responseAfterPayment = await captureAndFinalizePaymentService(
+      //   sessionId,
+      //   response.data.orderId
+      // );
+      // console.log("Payment Capture Response:", responseAfterPayment);
+      // // Call capture API to finalize payment
+      // // You can do this in a separate page e.g., /payment-success?session_id=...
     } catch (err) {
       console.error(err);
       alert("Error processing payment!");
