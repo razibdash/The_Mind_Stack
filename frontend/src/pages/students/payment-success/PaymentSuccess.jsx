@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
-import { captureAndFinalizePaymentService } from "../../services";
+import { captureAndFinalizePaymentService } from "../../../services";
 
 const PaymentSuccess = () => {
   const [searchParams] = useSearchParams();
@@ -31,7 +31,7 @@ const PaymentSuccess = () => {
           setMessage("✅ Payment successful! Your course is now unlocked.");
           // Optionally redirect after a delay
           setTimeout(() => {
-            navigate("/courses");
+            navigate("/student-courses");
           }, 3000);
         } else {
           setStatus("error");

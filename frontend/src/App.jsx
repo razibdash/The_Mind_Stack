@@ -14,8 +14,9 @@ import AddNewCourse from "./pages/instructors/add-new-course";
 import StudentHomePage from "./pages/students/home";
 import StudentViewCourses from "./pages/students/courses";
 import StudentCourseDetailsPage from "./pages/students/course-details";
-import PaymentSuccess from "./pages/payment-success/PaymentSuccess";
+import PaymentSuccess from "./pages/students/payment-success/PaymentSuccess";
 import PaymentCancel from "./pages/students/payment-return/PaymentReturn";
+import StudentBoughtCoursesPage from "./pages/students/student-courses";
 
 function App() {
   const { auth, loading } = useContext(AuthContext);
@@ -86,6 +87,10 @@ function App() {
           {/* ✅ Stripe success page */}
           <Route path="payment-success" element={<PaymentSuccess />} />
           <Route path="payment-cancel" element={<PaymentCancel />} />
+          <Route
+            path="student-courses"
+            element={<StudentBoughtCoursesPage />}
+          />
         </Route>
         <Route path="*" element={<NotFound />} />
       </Routes>

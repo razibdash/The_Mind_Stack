@@ -55,7 +55,12 @@ const StudentViewCommonHeader = () => {
             Explore Courses
           </Button>
 
-          <div className="flex items-center gap-2 cursor-pointer group relative">
+          <div
+            onClick={() => {
+              navigate("/student-courses");
+            }}
+            className="flex items-center gap-2 cursor-pointer group relative"
+          >
             <span
               className="font-medium text-gray-300 group-hover:text-blue-400 
               transition-colors duration-300"
@@ -122,7 +127,13 @@ const StudentViewCommonHeader = () => {
             Explore Courses
           </Button>
 
-          <div className="flex items-center justify-center gap-2 cursor-pointer group relative">
+          <div
+            onClick={() => {
+              navigate("/student-courses");
+              setIsMenuOpen(false);
+            }}
+            className="flex items-center justify-center gap-2 cursor-pointer group relative"
+          >
             <span
               className="font-medium text-gray-300 group-hover:text-blue-400 
               transition-colors duration-300"
