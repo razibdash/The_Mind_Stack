@@ -54,9 +54,12 @@ const StudentBoughtCoursesPage = () => {
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.4, delay: index * 0.1 }}
               >
-                <Card className="flex flex-col rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-100">
+                <Card
+                  className="flex flex-col group bg-gray-900/80 border border-gray-700 rounded-2xl overflow-hidden shadow-lg 
+                hover:shadow-2xl hover:scale-[1.03] transition-transform duration-300 cursor-pointer backdrop-blur-md text-stone-100"
+                >
                   {/* Course Image */}
-                  <CardContent className="p-0 flex-grow">
+                  <CardContent className="">
                     <img
                       src={course?.courseImage}
                       alt={course?.title}
@@ -66,19 +69,20 @@ const StudentBoughtCoursesPage = () => {
                       <h3 className="font-semibold text-lg mb-1 line-clamp-1">
                         {course?.title}
                       </h3>
-                      <p className="text-sm text-gray-600 mb-2">
+                      <p className="text-sm text-stone-200 mb-2">
                         👨‍🏫 {course?.instructorName}
                       </p>
                     </div>
                   </CardContent>
 
                   {/* Footer with button */}
-                  <CardFooter className="p-4 border-t bg-gray-50">
+                  <CardFooter className=" ">
                     <Button
                       onClick={() =>
                         navigate(`/course-progress/${course?.courseId}`)
                       }
-                      className="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-xl shadow-md transition"
+                      className="flex-1 bg-gradient-to-r from-blue-500 to-teal-500 
+              hover:from-blue-600 hover:to-teal-600  text-white font-medium rounded-xl shadow-md transition"
                     >
                       <Watch className="mr-2 h-4 w-4" />
                       Start Watching
