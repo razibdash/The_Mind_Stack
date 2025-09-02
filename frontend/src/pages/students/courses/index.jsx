@@ -101,9 +101,10 @@ const StudentViewCourses = () => {
     );
 
     if (response?.success) {
-      if (response?.data) {
+      if (!response?.data) {
         navigate(`/course-progress/${getCurrentCourseId}`);
       } else {
+        console.log("navigating to details page");
         navigate(`/course/details/${getCurrentCourseId}`);
       }
     }

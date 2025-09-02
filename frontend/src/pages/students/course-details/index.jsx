@@ -53,6 +53,7 @@ const StudentCourseDetailsPage = () => {
   const [approvalUrl, setApprovalUrl] = useState("");
   const navigate = useNavigate();
   const { id } = useParams();
+  console.log(id, "Course ID from params");
   const location = useLocation();
   const FetchCourseDataById = async () => {
     try {

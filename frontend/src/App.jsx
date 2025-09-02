@@ -82,7 +82,7 @@ function App() {
           <Route path="home" element={<StudentHomePage />} />
           <Route path="courses" element={<StudentViewCourses />} />
           <Route
-            path="courses/details/:id"
+            path="/course/details/:id"
             element={<StudentCourseDetailsPage />}
           />
           {/* ✅ Stripe success page */}
