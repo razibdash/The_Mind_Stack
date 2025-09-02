@@ -17,6 +17,7 @@ import StudentCourseDetailsPage from "./pages/students/course-details";
 import PaymentSuccess from "./pages/students/payment-success/PaymentSuccess";
 import PaymentCancel from "./pages/students/payment-return/PaymentReturn";
 import StudentBoughtCoursesPage from "./pages/students/student-courses";
+import CourseProgressPage from "./pages/students/course-progress";
 
 function App() {
   const { auth, loading } = useContext(AuthContext);
@@ -90,6 +91,10 @@ function App() {
           <Route
             path="student-courses"
             element={<StudentBoughtCoursesPage />}
+          />
+          <Route
+            path="course-progress/:courseId"
+            element={<CourseProgressPage />}
           />
         </Route>
         <Route path="*" element={<NotFound />} />

@@ -13,8 +13,12 @@ import { sortOptions, filterOptions } from "@/config";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { StudentContext } from "@/context/student-context";
-import { fetchStudentsViewCourseListService } from "@/services";
+import {
+  checkCoursePurchaseInfoService,
+  fetchStudentsViewCourseListService,
+} from "@/services";
 import { useNavigate, useSearchParams } from "react-router-dom";
+import { AuthContext } from "@/context/auth-context";
 
 function createQueryParams(filterParams) {
   const queryParams = [];
@@ -33,6 +37,7 @@ function createQueryParams(filterParams) {
 const StudentViewCourses = () => {
   const [sort, setSort] = useState("price-lowtohigh");
   const [filters, setFilters] = useState({});
+  const { auth } = useContext(AuthContext);
   const {
     studentViewCoursesList,
     setStudentViewCoursesList,
@@ -89,6 +94,21 @@ const StudentViewCourses = () => {
     setFilters(cpyFilters);
     sessionStorage.setItem("filters", JSON.stringify(cpyFilters));
   }
+  async function handleCourseNavigate(getCurrentCourseId) {
+    const response = await checkCoursePurchaseInfoService(
+      getCurrentCourseId,
+      auth?.user?._id
+    );
+
+    if (response?.success) {
+      if (response?.data) {
+        navigate(`/course-progress/${getCurrentCourseId}`);
+      } else {
+        navigate(`/course/details/${getCurrentCourseId}`);
+      }
+    }
+  }
+
   useEffect(() => {
     setSort("price-lowtohigh");
     setFilters(JSON.parse(sessionStorage.getItem("filters")) || {});
@@ -230,7 +250,7 @@ const StudentViewCourses = () => {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: idx * 0.06, duration: 0.45 }}
                     whileHover={{ y: -4, scale: 1.01 }}
-                    onClick={() => navigate(`/courses/details/${course._id}`)}
+                    onClick={() => handleCourseNavigate(course._id)}
                     className="flex flex-col sm:flex-row cursor-pointer items-center sm:items-start gap-4 p-4 rounded-xl 
                             border border-gray-700/60 bg-gray-800/60 backdrop-blur-md shadow-sm 
                             hover:shadow-lg transition-all duration-300 last:border-b-0"
