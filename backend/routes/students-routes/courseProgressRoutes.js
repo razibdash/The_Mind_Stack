@@ -3,7 +3,7 @@ const { getCurrentCourseProgress, markCurrentLectureAsViewed, resetCurrentCourse
 
 const router = express.Router();
 
-router.get("/get/:userId/:courseId", getCurrentCourseProgress);
+router.get("/get-progress/:userId/:courseId", getCurrentCourseProgress);
 router.post("/mark-lecture-viewed", markCurrentLectureAsViewed);
 router.post("/reset-progress", resetCurrentCourseProgress);
 

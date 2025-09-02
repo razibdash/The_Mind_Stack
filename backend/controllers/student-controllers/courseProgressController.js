@@ -1,6 +1,6 @@
 const CourseProgress = require("../../models/CourseProgress");
 const Course = require("../../models/Course");
-const StudentCourses = require("../../models/StudentCourses");
+const StudentCourses = require("../../models/StudentEnrollCourse");
 
 //mark current lecture as viewed
 const markCurrentLectureAsViewed = async (req, res) => {
@@ -80,7 +80,7 @@ const getCurrentCourseProgress = async (req, res) => {
     const { userId, courseId } = req.params;
 
     const studentPurchasedCourses = await StudentCourses.findOne({ userId });
-
+    console.log(studentPurchasedCourses, "purchased courses");
     const isCurrentCoursePurchasedByCurrentUserOrNot =
       studentPurchasedCourses?.courses?.findIndex(
         (item) => item.courseId === courseId

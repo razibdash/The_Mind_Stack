@@ -50,7 +50,7 @@ app.use("/api/instructor/course", courseRoutes);
 app.use("/api/student/course", studentCourseRoutes);
 app.use("/api/student/order", studentOrderRoutes);
 app.use("/api/student/courses-bought", studentBoughtCourseRoutes);
-app.use("api/student/course-progress", studentCourseProgressRoutes);
+app.use("/api/student/course-progress", studentCourseProgressRoutes);
 
 //app listening
 app.listen(PORT, () => {

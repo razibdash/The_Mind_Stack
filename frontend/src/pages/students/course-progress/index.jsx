@@ -1,10 +1,89 @@
 import { Button } from "@/components/ui/button";
+import { AuthContext } from "@/context/auth-context";
+import { StudentContext } from "@/context/student-context";
+import {
+  getCurrentCourseProgressService,
+  markLectureAsViewedService,
+} from "@/services";
 import { ChevronLeft } from "lucide-react";
-import React from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useContext, useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 
 const CourseProgressPage = () => {
+  const { auth } = useContext(AuthContext);
+  const { studentCurrentCourseProgress, setStudentCurrentCourseProgress } =
+    useContext(StudentContext);
+  const [lockCourse, setLockCourse] = useState(false);
+  const [currentLecture, setCurrentLecture] = useState(null);
+  const [showCourseCompleteDialog, setShowCourseCompleteDialog] =
+    useState(false);
+  const [showConfetti, setShowConfetti] = useState(false);
+  const [isSideBarOpen, setIsSideBarOpen] = useState(true);
+  const { courseId } = useParams();
   const navigate = useNavigate();
+  console.log(courseId, "course id");
+
+  async function fetchCurrentCourseProgress() {
+    const response = await getCurrentCourseProgressService(
+      auth?.user?._id,
+      courseId
+    );
+    if (response?.success) {
+      if (!response?.data?.isPurchased) {
+        setLockCourse(true);
+      } else {
+        setStudentCurrentCourseProgress({
+          courseDetails: response?.data?.courseDetails,
+          progress: response?.data?.progress,
+        });
+
+        if (response?.data?.completed) {
+          setCurrentLecture(response?.data?.courseDetails?.curriculum[0]);
+          setShowCourseCompleteDialog(true);
+          setShowConfetti(true);
+
+          return;
+        }
+
+        if (response?.data?.progress?.length === 0) {
+          setCurrentLecture(response?.data?.courseDetails?.curriculum[0]);
+        } else {
+          console.log("logging here");
+          const lastIndexOfViewedAsTrue = response?.data?.progress.reduceRight(
+            (acc, obj, index) => {
+              return acc === -1 && obj.viewed ? index : acc;
+            },
+            -1
+          );
+
+          setCurrentLecture(
+            response?.data?.courseDetails?.curriculum[
+              lastIndexOfViewedAsTrue + 1
+            ]
+          );
+        }
+      }
+    }
+  }
+
+  async function updateCourseProgress() {
+    if (currentLecture) {
+      const response = await markLectureAsViewedService(
+        auth?.user?._id,
+        studentCurrentCourseProgress?.courseDetails?._id,
+        currentLecture._id
+      );
+
+      if (response?.success) {
+        fetchCurrentCourseProgress();
+      }
+    }
+  }
+
+  useEffect(() => {
+    fetchCurrentCourseProgress();
+  }, [courseId]);
+  console.log(studentCurrentCourseProgress, "studentCurrentCourseProgress");
   return (
     <div className="flex flex-col h-screen bg-[#1c1d1f] text-white">
       <div className="flex items-center justify-between p-4 bg-[#1c1d1f] border-b border-gray-700">
