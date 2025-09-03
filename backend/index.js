@@ -16,6 +16,7 @@ const studentCourseRoutes = require("./routes/students-routes/courseRoutes.js");
 const studentOrderRoutes=require('./routes/students-routes/orderRoutes.js')
 const studentBoughtCourseRoutes=require('./routes/students-routes/studentCoursesRoutes.js')
 const studentCourseProgressRoutes=require('./routes/students-routes/courseProgressRoutes.js')
+const studentCourseCountDashboard=require('./routes/instructor-routes/dashboardRoutes.js')
 //Port
 const PORT = process.env.PORT || 5000;
 //CORS configuration
@@ -51,6 +52,7 @@ app.use("/api/student/course", studentCourseRoutes);
 app.use("/api/student/order", studentOrderRoutes);
 app.use("/api/student/courses-bought", studentBoughtCourseRoutes);
 app.use("/api/student/course-progress", studentCourseProgressRoutes);
+app.use('/api/count/',studentCourseCountDashboard)
 
 //app listening
 app.listen(PORT, () => {

@@ -160,3 +160,12 @@ export async function resetCourseProgressService(userId, courseId) {
 
   return data;
 }
+
+export async function fetchAllCountCourses(){
+   const {data}=await axiosInstance.get('api/instructor/course/get-count-courses');
+   return data
+}
+export async function fetchStudentCountCourses(){
+   const {data}=await axiosInstance.get('api/count/student-course');
+   return data
+}

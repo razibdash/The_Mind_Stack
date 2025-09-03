@@ -13,6 +13,7 @@ export default function InstructorProvider({ children }) {
   const [courseCurriculumFormData, setCourseCurriculumFormData] = useState(
     courseCurriculumInitialFormData
   );
+  const [fetchAllCountCourse, setFetchAllCountCourse] = useState(null);
   const [mediaUploadProgress, setMediaUploadProgress] = useState(false);
   const [mediaUploadProgressPercentage, setMediaUploadProgressPercentage] =
     useState(0);
@@ -34,6 +35,8 @@ export default function InstructorProvider({ children }) {
         setInstructorCoursesList,
         currentEditedCourseId,
         setCurrentEditedCourseId,
+        fetchAllCountCourse,
+        setFetchAllCountCourse,
       }}
     >
       {children}

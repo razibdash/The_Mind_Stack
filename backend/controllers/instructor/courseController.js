@@ -95,10 +95,33 @@ const updateCourseByID = async (req, res) => {
     });
   }
 };
+const getCountCourses=async(req,res)=>{
+   try {
+      const countCourse =await Course.countDocuments()
+      if(countCourse==null){
+        res.status(500).json({
+      success:false,
+      message:"Some error occured!",
+      data:[]
+     })
+      }
+      res.status(200).json({
+        success:true,
+        message:"count is successfull",
+        count:countCourse
+      })
+   } catch (error) {
+     res.status(500).json({
+      success:false,
+      message:"Some error occured!"
+     })
+   }
+}
 
 module.exports = {
   addNewCourse,
   getAllCourses,
   updateCourseByID,
   getCourseDetailsByID,
+  getCountCourses
 };
