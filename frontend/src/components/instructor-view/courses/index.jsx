@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import Swal from "sweetalert2";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Table,
@@ -13,6 +14,7 @@ import {
   courseLandingInitialFormData,
 } from "@/config";
 import { InstructorContext } from "@/context/instructor-context";
+import { deleteCourseByIdService } from "@/services";
 import { Delete, Edit } from "lucide-react";
 import { useContext } from "react";
 
@@ -25,7 +27,36 @@ const InstructorCourses = ({ listOfCourses }) => {
     setCourseLandingFormData,
     setCourseCurriculumFormData,
   } = useContext(InstructorContext);
+  // deleteCourseByIdService
+  const handleDeleteCourseById = async (id) => {
+    try {
+      const confirm = await Swal.fire({
+        title: "Are you sure?",
+        text: "This will permanently delete the course!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#d33",
+        cancelButtonColor: "#3085d6",
+        confirmButtonText: "Yes, delete it!",
+      });
 
+      if (confirm.isConfirmed) {
+        const res = await deleteCourseByIdService(id);
+
+        if (res.success) {
+          Swal.fire("Deleted!", "The course has been deleted.", "success");
+        } else {
+          Swal.fire(
+            "Error!",
+            res.message || "Failed to delete course.",
+            "error"
+          );
+        }
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <Card className="shadow-xl border border-gray-200 rounded-2xl overflow-hidden">
       {/* Header with gradient */}
@@ -90,7 +121,8 @@ const InstructorCourses = ({ listOfCourses }) => {
                       <Button
                         variant="ghost"
                         size="sm"
-                        className="p-2 rounded-full bg-gradient-to-r from-red-400 to-pink-400 transition-all duration-300
+                        onClick={() => handleDeleteCourseById(course?._id)}
+                        className="p-2 rounded-full cursor-pointer bg-gradient-to-r from-red-400 to-pink-400 transition-all duration-300
                                    hover:bg-gradient-to-r hover:from-red-400 hover:to-pink-400"
                       >
                         <Delete className="h-6 w-6 text-white hover:text-gray-900" />

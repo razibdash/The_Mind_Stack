@@ -49,9 +49,13 @@ function AuthIndex() {
   }
 
   return (
-    <div className="flex flex-col min-h-screen">
+    <div
+      className="flex flex-col min-h-screen bg-gradient-to-r 
+      from-gray-900/95 via-gray-800/90 to-gray-900/95 text-white 
+      shadow-xl border-b border-gray-700/60 backdrop-blur-lg"
+    >
       {/* Header */}
-      <header className="px-4 lg:px-6 h-16 flex items-center border-b bg-white/70 backdrop-blur-md shadow-sm">
+      <header className="px-4 lg:px-6 h-16 flex items-center border-b  backdrop-blur-md shadow-sm">
         <Link to={"/"} className="flex items-center space-x-2">
           <img src="/logo1.PNG" className="h-10 w-10 rounded-lg shadow-md" />
           <span className="text-xl lg:text-2xl font-extrabold text-[#3192C7] tracking-wide">
@@ -61,7 +65,10 @@ function AuthIndex() {
       </header>
 
       {/* Main Section */}
-      <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-blue-50 via-white to-teal-50">
+      <div
+        className="flex items-center justify-center min-h-screen  bg-gradient-to-r 
+      from-gray-900/95 via-gray-800/90 to-gray-900/95 text-white"
+      >
         <Tabs
           value={activeTab}
           defaultValue="signin"
@@ -69,7 +76,10 @@ function AuthIndex() {
           className="w-full max-w-md p-4"
         >
           {/* Tabs List */}
-          <TabsList className="grid w-full grid-cols-2 rounded-xl bg-gray-100 ">
+          <TabsList
+            className="grid w-full grid-cols-2 rounded-xl  bg-gradient-to-r 
+      from-gray-900/95 via-gray-800/90 to-gray-900/95 text-white "
+          >
             <TabsTrigger
               className={` font-bold rounded-lg transition-all duration-300 data-[state=active]:bg-gradient-to-r data-[state=active]:from-blue-500 data-[state=active]:to-teal-400 data-[state=active]:text-white`}
               value="signin"
@@ -86,12 +96,15 @@ function AuthIndex() {
 
           {/* Sign In Card */}
           <TabsContent value="signin">
-            <Card className="p-6 mt-4 space-y-4 rounded-2xl shadow-xl border border-gray-200 bg-white/80 backdrop-blur-md">
+            <Card
+              className="p-6 mt-4 space-y-4 rounded-2xl shadow-xl border  bg-gradient-to-r 
+      from-gray-900/95 via-gray-800/90 to-gray-900/95 text-white backdrop-blur-md"
+            >
               <CardHeader>
-                <CardTitle className="text-[#3192C7] text-2xl font-extrabold">
+                <CardTitle className="text-[#1b95d6] text-2xl font-extrabold">
                   Welcome Back! 👋
                 </CardTitle>
-                <CardDescription className="text-gray-600">
+                <CardDescription className="text-gray-400">
                   Please enter your credentials to continue
                 </CardDescription>
               </CardHeader>
@@ -110,7 +123,10 @@ function AuthIndex() {
 
           {/* Sign Up Card */}
           <TabsContent value="signup">
-            <Card className="p-6 mt-4 space-y-4 rounded-2xl shadow-xl border border-gray-200 bg-white/80 backdrop-blur-md">
+            <Card
+              className="p-6 mt-4 space-y-4 rounded-2xl shadow-xl border  bg-gradient-to-r 
+      from-gray-900/95 via-gray-800/90 to-gray-900/95 text-white backdrop-blur-md"
+            >
               <CardHeader>
                 <CardTitle className="text-[#3192C7] text-2xl font-extrabold">
                   Create a New Account 🚀
