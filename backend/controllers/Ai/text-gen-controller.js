@@ -15,18 +15,13 @@ const textGenController = async (req, res) => {
   }
 
   try {
-    const response = await axios.post(
-      "https://api.groq.com/openai/v1/chat/completions",
+   const response = await axios.post(
+      "https://api.groq.com/v1/llm/predict",
       {
         model: "llama3-70b-8192",
-        messages: [
-          {
-            role: "user",
-            content: createPrompt(topic),
-          },
-        ],
+        input: createPrompt(topic),
         temperature: 0.7,
-        max_tokens: 1024,
+        max_output_tokens: 1024,
       },
       {
         headers: {
@@ -36,14 +31,19 @@ const textGenController = async (req, res) => {
       }
     );
 
-    const description = response.data.choices[0].message.content;
+    const description = response.data?.output?.[0]?.content?.[0]?.text;
+    if (!description) {
+      return res
+        .status(500)
+        .json({ error: "No content returned from Groq API." });
+    }
+
     res.json({ description });
   } catch (err) {
-    console.error("Error generating course description:", err);
+    console.error("Error generating course description:", err.response?.data || err.message);
     res.status(500).json({ error: "Failed to generate course description." });
   }
 };
-
 module.exports = {
   textGenController,
 };

@@ -73,10 +73,10 @@ const checkCoursePurchaseInfo = async (req, res) => {
     const { id, studentId } = req.params;
 
     const studentCourses = await StudentCourses.findOne({ userId: studentId });
-
+  console.log(studentCourses)
     if (!studentCourses) {
       return res.status(200).json({
-        success: true,
+        success: false,
         data: [], // student has not bought any courses
       });
     }

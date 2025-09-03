@@ -37,7 +37,7 @@ const CourseSettings = () => {
       </CardHeader>
 
       {/* Content */}
-      <CardContent className="grid grid-cols-2 gap-6 bg-white p-6">
+      <CardContent className="grid grid-cols-1 gap-6 bg-white p-6">
         {/* Upload Thumbnail Section */}
         <div className="flex flex-col gap-4">
           <label className="font-semibold text-gray-700">
@@ -62,12 +62,12 @@ const CourseSettings = () => {
         </div>
 
         {/* AI Image Generator Section */}
-        <div
+        {/* <div
           className="bg-gradient-to-r from-blue-500 to-teal-400 rounded-lg p-4 shadow-inner 
                         transition-all duration-300 hover:shadow-xl hover:scale-105 text-white"
         >
           <AiImageGenerator />
-        </div>
+        </div> */}
       </CardContent>
     </Card>
   );

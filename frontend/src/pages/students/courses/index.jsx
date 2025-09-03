@@ -106,6 +106,8 @@ const StudentViewCourses = () => {
       } else {
         navigate(`/course/details/${getCurrentCourseId}`);
       }
+    } else {
+      navigate(`/course/details/${getCurrentCourseId}`);
     }
   }
 
