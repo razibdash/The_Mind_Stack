@@ -99,12 +99,11 @@ const StudentViewCourses = () => {
       getCurrentCourseId,
       auth?.user?._id
     );
-
+    console.log(response, "check course parcheses ");
     if (response?.success) {
-      if (!response?.data) {
+      if (response?.data) {
         navigate(`/course-progress/${getCurrentCourseId}`);
       } else {
-        console.log("navigating to details page");
         navigate(`/course/details/${getCurrentCourseId}`);
       }
     }

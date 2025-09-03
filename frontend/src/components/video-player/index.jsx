@@ -17,7 +17,6 @@ export default function VideoPlayer({ url, width, height }) {
     <MediaController
       style={{
         width: width || "100%",
-        aspectRatio: "16/9",
         backgroundColor: "black",
         borderRadius: "12px",
         overflow: "hidden",

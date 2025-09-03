@@ -1,7 +1,7 @@
 const CourseProgress = require("../../models/CourseProgress");
 const Course = require("../../models/Course");
 const StudentCourses = require("../../models/StudentEnrollCourse");
-
+const mongoose = require('mongoose');
 //mark current lecture as viewed
 const markCurrentLectureAsViewed = async (req, res) => {
   try {
@@ -74,21 +74,30 @@ const markCurrentLectureAsViewed = async (req, res) => {
   }
 };
 
-//get current course progress
+// get current course progress
 const getCurrentCourseProgress = async (req, res) => {
   try {
     const { userId, courseId } = req.params;
 
+    if (!mongoose.Types.ObjectId.isValid(userId) || !mongoose.Types.ObjectId.isValid(courseId)) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid userId or courseId",
+      });
+    }
+
     const studentPurchasedCourses = await StudentCourses.findOne({ userId });
     console.log(studentPurchasedCourses, "purchased courses");
     const isCurrentCoursePurchasedByCurrentUserOrNot =
-      studentPurchasedCourses?.courses?.findIndex(
-        (item) => item.courseId === courseId
-      ) > -1;
+      studentPurchasedCourses && Array.isArray(studentPurchasedCourses.courses)
+        ? studentPurchasedCourses.courses.findIndex(
+            (item) => item.courseId.toString() === courseId.toString()
+          ) > -1
+        : false;
 
     if (!isCurrentCoursePurchasedByCurrentUserOrNot) {
-      return res.status(200).json({
-        success: true,
+      return res.status(403).json({
+        success: false,
         data: {
           isPurchased: false,
         },
@@ -103,7 +112,8 @@ const getCurrentCourseProgress = async (req, res) => {
 
     if (
       !currentUserCourseProgress ||
-      currentUserCourseProgress?.lecturesProgress?.length === 0
+      !Array.isArray(currentUserCourseProgress.lecturesProgress) ||
+      currentUserCourseProgress.lecturesProgress.length === 0
     ) {
       const course = await Course.findById(courseId);
       if (!course) {
@@ -137,19 +147,40 @@ const getCurrentCourseProgress = async (req, res) => {
       },
     });
   } catch (error) {
-    console.log(error);
+    console.error(error); // Use a proper logging library in production
     res.status(500).json({
       success: false,
-      message: "Some error occured!",
+      message: "Some error occurred!",
     });
   }
 };
 
-//reset course progress
-
+// reset course progress
 const resetCurrentCourseProgress = async (req, res) => {
   try {
     const { userId, courseId } = req.body;
+
+    if (!mongoose.Types.ObjectId.isValid(userId) || !mongoose.Types.ObjectId.isValid(courseId)) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid userId or courseId",
+      });
+    }
+
+    const studentPurchasedCourses = await StudentCourses.findOne({ userId });
+    const isCurrentCoursePurchasedByCurrentUserOrNot =
+      studentPurchasedCourses && Array.isArray(studentPurchasedCourses.courses)
+        ? studentPurchasedCourses.courses.findIndex(
+            (item) => item.courseId.toString() === courseId.toString()
+          ) > -1
+        : false;
+
+    if (!isCurrentCoursePurchasedByCurrentUserOrNot) {
+      return res.status(403).json({
+        success: false,
+        message: "You need to purchase this course to reset its progress.",
+      });
+    }
 
     const progress = await CourseProgress.findOne({ userId, courseId });
 
@@ -172,10 +203,10 @@ const resetCurrentCourseProgress = async (req, res) => {
       data: progress,
     });
   } catch (error) {
-    console.log(error);
+    console.error(error); // Use a proper logging library in production
     res.status(500).json({
       success: false,
-      message: "Some error occured!",
+      message: "Some error occurred!",
     });
   }
 };
